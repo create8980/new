@@ -3,2371 +3,615 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Travel Paradise | Hotel, Flight & Visa</title>
-
+<title>Travel Paradise | Hotel, Flight & Visa Automation</title>
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  scroll-behavior:smooth;
+*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth;}
+body{font-family:Arial,Helvetica,sans-serif;background:#f5f8fc;color:#17202a;line-height:1.6;}
+a{text-decoration:none;color:inherit;}
+button,input,select,textarea{font-family:inherit;}
+.navbar{position:sticky;top:0;z-index:1000;min-height:76px;padding:12px 6%;display:flex;justify-content:space-between;align-items:center;background:#fff;box-shadow:0 3px 20px rgba(0,0,0,.08);}
+.logo{font-size:25px;font-weight:800;color:#0077b6;}
+.logo span{color:#ff7b00;}
+.nav-links{display:flex;list-style:none;gap:22px;align-items:center;}
+.nav-links a{font-weight:600;}
+.nav-links a:hover{color:#0077b6;}
+.menu-btn{display:none;font-size:28px;cursor:pointer;}
+.auth-area,.user-menu{display:flex;gap:8px;align-items:center;}
+.user-menu{display:none;}
+.user-avatar{width:38px;height:38px;border-radius:50%;background:#0077b6;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;}
+.btn{border:none;padding:13px 24px;border-radius:8px;background:#ff7b00;color:#fff;font-weight:700;cursor:pointer;transition:.25s;}
+.btn:hover{transform:translateY(-2px);background:#e86d00;}
+.btn-blue{background:#0077b6;}
+.btn-blue:hover{background:#005f91;}
+.btn-dark{background:#06283d;}
+.btn-small{padding:9px 15px;font-size:14px;}
+.hero{min-height:620px;display:flex;justify-content:center;align-items:center;text-align:center;color:#fff;padding:40px 20px;background:linear-gradient(rgba(0,40,70,.62),rgba(0,40,70,.62)),url("https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1800&q=80") center/cover;}
+.hero-content{max-width:950px;}
+.hero h1{font-size:58px;margin-bottom:18px;}
+.hero h1 span{color:#ffb703;}
+.hero p{font-size:20px;margin-bottom:30px;}
+.hero-buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+.booking-box{width:90%;max-width:1200px;margin:-65px auto 55px;position:relative;background:#fff;padding:30px;border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.16);}
+.booking-box h2{color:#0077b6;text-align:center;margin-bottom:22px;}
+.booking-tabs{display:flex;justify-content:center;gap:8px;margin-bottom:25px;flex-wrap:wrap;}
+.booking-tab{padding:11px 22px;border:none;border-radius:25px;background:#eef4f8;color:#333;cursor:pointer;font-weight:bold;}
+.booking-tab.active{background:#0077b6;color:white;}
+.booking-panel{display:none;}
+.booking-panel.active{display:block;}
+.flight-search{background:#f7fbfe;border:1px solid #e2edf3;border-radius:15px;padding:22px;}
+.trip-type{display:flex;gap:20px;margin-bottom:18px;font-weight:bold;}
+.flight-grid{display:grid;grid-template-columns:1.2fr 1.2fr 1fr 1fr 1fr 1fr auto;gap:12px;align-items:end;}
+.input-group label{display:block;font-weight:bold;margin-bottom:6px;font-size:14px;}
+.input-group input,.input-group select,.form-control{width:100%;padding:13px;border:1px solid #d8e0e6;border-radius:8px;outline:none;background:white;}
+.input-group input:focus,.input-group select:focus,.form-control:focus{border-color:#0077b6;}
+.flight-results{margin-top:30px;display:none;}
+.flight-results h3{color:#0077b6;margin-bottom:15px;}
+.flight-card{background:#fff;border:1px solid #e5e9ed;border-radius:14px;padding:20px;margin-bottom:15px;display:grid;grid-template-columns:1.5fr 2fr 1fr 1fr;gap:20px;align-items:center;box-shadow:0 4px 15px rgba(0,0,0,.05);}
+.airline-name{font-weight:bold;color:#06283d;}
+.flight-route{font-size:18px;font-weight:bold;}
+.flight-route small{display:block;font-size:12px;color:#777;font-weight:normal;}
+.flight-price{font-size:21px;font-weight:bold;color:#0077b6;}
+section{padding:70px 7%;}
+.section-title{text-align:center;margin-bottom:42px;}
+.section-title h2{font-size:36px;color:#0077b6;}
+.section-title p{color:#666;}
+.services{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;}
+.service-card{background:#fff;padding:30px 20px;text-align:center;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.07);transition:.3s;}
+.service-card:hover{transform:translateY(-7px);}
+.service-icon{font-size:45px;margin-bottom:12px;}
+.service-card h3{color:#0077b6;margin-bottom:8px;}
+.service-card p{color:#666;}
+.hotels{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;}
+.hotel-card{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.08);}
+.hotel-card img{width:100%;height:220px;object-fit:cover;}
+.hotel-info{padding:22px;}
+.hotel-info h3{color:#0077b6;}
+.rating{color:#ff9d00;margin:7px 0;}
+.price{font-size:21px;font-weight:bold;margin:12px 0 17px;}
+.about{background:#fff;}
+.about-container{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;}
+.about img{width:100%;border-radius:16px;}
+.about h2{font-size:38px;color:#0077b6;margin-bottom:15px;}
+.packages{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;}
+.package{background:#fff;padding:27px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.08);}
+.package h3{color:#0077b6;}
+.package ul{padding-left:20px;margin:15px 0;}
+.contact{background:#eef7fb;}
+.contact-container{display:grid;grid-template-columns:1fr 1fr;gap:40px;}
+.contact-info h3{color:#0077b6;font-size:27px;margin-bottom:15px;}
+.contact-info p{margin:12px 0;}
+.contact-form{background:#fff;padding:30px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.08);}
+.contact-form input,.contact-form textarea{width:100%;padding:13px;margin-bottom:14px;border:1px solid #ddd;border-radius:8px;}
+.contact-form textarea{height:130px;resize:none;}
+footer{background:#06283d;color:#fff;padding:45px 7% 20px;}
+.footer-content{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:30px;}
+footer h3{color:#ffb703;margin-bottom:13px;}
+footer p{color:#d7e6ee;}
+.footer-links{list-style:none;}
+.footer-links li{margin:8px 0;}
+.copyright{text-align:center;border-top:1px solid rgba(255,255,255,.15);padding-top:20px;color:#bbb;}
+.whatsapp{position:fixed;right:25px;bottom:25px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:flex;justify-content:center;align-items:center;font-size:27px;z-index:999;box-shadow:0 5px 20px rgba(0,0,0,.2);}
+.modal{display:none;position:fixed;z-index:3000;inset:0;background:rgba(0,0,0,.65);justify-content:center;align-items:center;padding:20px;}
+.modal.active{display:flex;}
+.modal-box{width:100%;max-width:470px;background:#fff;padding:30px;border-radius:16px;position:relative;max-height:90vh;overflow:auto;}
+.modal-box h2{color:#0077b6;margin-bottom:20px;text-align:center;}
+.close{position:absolute;right:18px;top:10px;font-size:28px;cursor:pointer;}
+.modal-box input,.modal-box select{width:100%;padding:13px;margin-bottom:13px;border:1px solid #ddd;border-radius:8px;}
+.modal-box .btn{width:100%;margin-top:5px;}
+.modal-link{text-align:center;margin-top:15px;color:#0077b6;cursor:pointer;}
+.dashboard{display:none;padding:70px 7%;background:#f5f8fc;}
+.dashboard-card{max-width:1000px;margin:auto;background:#fff;border-radius:16px;padding:30px;box-shadow:0 5px 20px rgba(0,0,0,.08);}
+.dashboard-card h2{color:#0077b6;margin-bottom:15px;}
+.booking-list{margin-top:25px;}
+.booking-item{border:1px solid #eee;padding:15px;border-radius:10px;margin-bottom:10px;}
+.status{display:inline-block;padding:4px 10px;border-radius:20px;background:#fff3cd;color:#856404;font-size:12px;}
+.loading{text-align:center;padding:20px;}
+.toast{position:fixed;right:20px;top:90px;z-index:5000;background:#06283d;color:#fff;padding:15px 20px;border-radius:9px;display:none;}
+.toast.show{display:block;}
+@media(max-width:1100px){
+  .nav-links{display:none;position:absolute;top:76px;right:0;background:#fff;width:250px;padding:20px;flex-direction:column;align-items:flex-start;box-shadow:0 5px 20px rgba(0,0,0,.1);}
+  .nav-links.active{display:flex;}
+  .menu-btn{display:block;}
+  .flight-grid{grid-template-columns:1fr 1fr 1fr;}
+  .services,.hotels,.packages{grid-template-columns:1fr 1fr;}
+  .about-container,.contact-container,.footer-content{grid-template-columns:1fr;}
+  .flight-card{grid-template-columns:1fr 1fr;}
 }
-
-body{
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f5f8fc;
-  color:#17202a;
-  line-height:1.6;
-}
-
-a{
-  text-decoration:none;
-  color:inherit;
-}
-
-button{
-  font-family:inherit;
-}
-
-.navbar{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  height:76px;
-  padding:0 6%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:#fff;
-  box-shadow:0 3px 20px rgba(0,0,0,.08);
-}
-
-.logo{
-  font-size:25px;
-  font-weight:800;
-  color:#0077b6;
-}
-
-.logo span{
-  color:#ff7b00;
-}
-
-.nav-links{
-  display:flex;
-  list-style:none;
-  gap:25px;
-  align-items:center;
-}
-
-.nav-links a{
-  font-weight:600;
-}
-
-.nav-links a:hover{
-  color:#0077b6;
-}
-
-.menu-btn{
-  display:none;
-  font-size:28px;
-  cursor:pointer;
-}
-
-.auth-area{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-
-.user-menu{
-  display:none;
-  align-items:center;
-  gap:8px;
-}
-
-.user-avatar{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:#0077b6;
-  color:#fff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-weight:bold;
-}
-
-.btn{
-  border:none;
-  padding:13px 24px;
-  border-radius:8px;
-  background:#ff7b00;
-  color:#fff;
-  font-weight:700;
-  cursor:pointer;
-  transition:.25s;
-}
-
-.btn:hover{
-  transform:translateY(-2px);
-  background:#e86d00;
-}
-
-.btn-blue{
-  background:#0077b6;
-}
-
-.btn-blue:hover{
-  background:#005f91;
-}
-
-.btn-small{
-  padding:9px 15px;
-  font-size:14px;
-}
-
-.hero{
-  min-height:620px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  color:#fff;
-  padding:40px 20px;
-
-  background:
-  linear-gradient(rgba(0,40,70,.62),rgba(0,40,70,.62)),
-  url("https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1800&q=80")
-  center/cover;
-}
-
-.hero-content{
-  max-width:900px;
-}
-
-.hero h1{
-  font-size:58px;
-  margin-bottom:18px;
-}
-
-.hero h1 span{
-  color:#ffb703;
-}
-
-.hero p{
-  font-size:20px;
-  margin-bottom:30px;
-}
-
-.hero-buttons{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
-}
-
-.booking-box{
-  width:86%;
-  max-width:1100px;
-  margin:-55px auto 50px;
-  position:relative;
-  background:#fff;
-  padding:30px;
-  border-radius:16px;
-  box-shadow:0 10px 35px rgba(0,0,0,.15);
-}
-
-.booking-box h2{
-  color:#0077b6;
-  text-align:center;
-  margin-bottom:22px;
-}
-
-.booking-form{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-}
-
-.input-group label{
-  display:block;
-  font-weight:bold;
-  margin-bottom:6px;
-}
-
-.input-group input,
-.input-group select,
-.form-control{
-  width:100%;
-  padding:13px;
-  border:1px solid #ddd;
-  border-radius:8px;
-  outline:none;
-}
-
-.input-group input:focus,
-.input-group select:focus,
-.form-control:focus{
-  border-color:#0077b6;
-}
-
-section{
-  padding:70px 7%;
-}
-
-.section-title{
-  text-align:center;
-  margin-bottom:42px;
-}
-
-.section-title h2{
-  font-size:36px;
-  color:#0077b6;
-}
-
-.section-title p{
-  color:#666;
-}
-
-.services{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:22px;
-}
-
-.service-card{
-  background:#fff;
-  padding:30px 20px;
-  text-align:center;
-  border-radius:15px;
-  box-shadow:0 5px 20px rgba(0,0,0,.07);
-  transition:.3s;
-}
-
-.service-card:hover{
-  transform:translateY(-7px);
-}
-
-.service-icon{
-  font-size:45px;
-  margin-bottom:12px;
-}
-
-.service-card h3{
-  color:#0077b6;
-  margin-bottom:8px;
-}
-
-.service-card p{
-  color:#666;
-}
-
-.hotels{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:25px;
-}
-
-.hotel-card{
-  background:#fff;
-  border-radius:15px;
-  overflow:hidden;
-  box-shadow:0 5px 20px rgba(0,0,0,.08);
-}
-
-.hotel-card img{
-  width:100%;
-  height:220px;
-  object-fit:cover;
-}
-
-.hotel-info{
-  padding:22px;
-}
-
-.hotel-info h3{
-  color:#0077b6;
-}
-
-.rating{
-  color:#ff9d00;
-  margin:7px 0;
-}
-
-.price{
-  font-size:21px;
-  font-weight:bold;
-  margin:12px 0 17px;
-}
-
-.about{
-  background:#fff;
-}
-
-.about-container{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:50px;
-  align-items:center;
-}
-
-.about img{
-  width:100%;
-  border-radius:16px;
-}
-
-.about h2{
-  font-size:38px;
-  color:#0077b6;
-  margin-bottom:15px;
-}
-
-.packages{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:25px;
-}
-
-.package{
-  background:#fff;
-  padding:27px;
-  border-radius:15px;
-  box-shadow:0 5px 20px rgba(0,0,0,.08);
-}
-
-.package h3{
-  color:#0077b6;
-}
-
-.package ul{
-  padding-left:20px;
-  margin:15px 0;
-}
-
-.contact{
-  background:#eef7fb;
-}
-
-.contact-container{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
-}
-
-.contact-info h3{
-  color:#0077b6;
-  font-size:27px;
-  margin-bottom:15px;
-}
-
-.contact-info p{
-  margin:12px 0;
-}
-
-.contact-form{
-  background:#fff;
-  padding:30px;
-  border-radius:15px;
-  box-shadow:0 5px 20px rgba(0,0,0,.08);
-}
-
-.contact-form input,
-.contact-form textarea{
-  width:100%;
-  padding:13px;
-  margin-bottom:14px;
-  border:1px solid #ddd;
-  border-radius:8px;
-}
-
-.contact-form textarea{
-  height:130px;
-  resize:none;
-}
-
-footer{
-  background:#06283d;
-  color:#fff;
-  padding:45px 7% 20px;
-}
-
-.footer-content{
-  display:grid;
-  grid-template-columns:2fr 1fr 1fr;
-  gap:40px;
-  margin-bottom:30px;
-}
-
-footer h3{
-  color:#ffb703;
-  margin-bottom:13px;
-}
-
-footer p{
-  color:#d7e6ee;
-}
-
-.footer-links{
-  list-style:none;
-}
-
-.footer-links li{
-  margin:8px 0;
-}
-
-.copyright{
-  text-align:center;
-  border-top:1px solid rgba(255,255,255,.15);
-  padding-top:20px;
-  color:#bbb;
-}
-
-.whatsapp{
-  position:fixed;
-  right:25px;
-  bottom:25px;
-  width:58px;
-  height:58px;
-  border-radius:50%;
-  background:#25d366;
-  color:#fff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:27px;
-  z-index:999;
-  box-shadow:0 5px 20px rgba(0,0,0,.2);
-}
-
-/* Modal */
-
-.modal{
-  display:none;
-  position:fixed;
-  z-index:3000;
-  inset:0;
-  background:rgba(0,0,0,.65);
-  justify-content:center;
-  align-items:center;
-  padding:20px;
-}
-
-.modal.active{
-  display:flex;
-}
-
-.modal-box{
-  width:100%;
-  max-width:450px;
-  background:#fff;
-  padding:30px;
-  border-radius:16px;
-  position:relative;
-  max-height:90vh;
-  overflow:auto;
-}
-
-.modal-box h2{
-  color:#0077b6;
-  margin-bottom:20px;
-  text-align:center;
-}
-
-.close{
-  position:absolute;
-  right:18px;
-  top:10px;
-  font-size:28px;
-  cursor:pointer;
-}
-
-.modal-box input{
-  width:100%;
-  padding:13px;
-  margin-bottom:13px;
-  border:1px solid #ddd;
-  border-radius:8px;
-}
-
-.modal-box .btn{
-  width:100%;
-  margin-top:5px;
-}
-
-.modal-link{
-  text-align:center;
-  margin-top:15px;
-  color:#0077b6;
-  cursor:pointer;
-}
-
-.dashboard{
-  display:none;
-  padding:70px 7%;
-  background:#f5f8fc;
-}
-
-.dashboard-card{
-  max-width:1000px;
-  margin:auto;
-  background:#fff;
-  border-radius:16px;
-  padding:30px;
-  box-shadow:0 5px 20px rgba(0,0,0,.08);
-}
-
-.dashboard-card h2{
-  color:#0077b6;
-  margin-bottom:15px;
-}
-
-.booking-list{
-  margin-top:25px;
-}
-
-.booking-item{
-  border:1px solid #eee;
-  padding:15px;
-  border-radius:10px;
-  margin-bottom:10px;
-}
-
-.status{
-  display:inline-block;
-  padding:4px 10px;
-  border-radius:20px;
-  background:#fff3cd;
-  color:#856404;
-  font-size:12px;
-}
-
-.loading{
-  text-align:center;
-  padding:20px;
-}
-
-.toast{
-  position:fixed;
-  right:20px;
-  top:90px;
-  z-index:5000;
-  background:#06283d;
-  color:#fff;
-  padding:15px 20px;
-  border-radius:9px;
-  display:none;
-}
-
-.toast.show{
-  display:block;
-}
-
-/* Responsive */
-
-@media(max-width:1000px){
-
-  .nav-links{
-    display:none;
-    position:absolute;
-    top:76px;
-    right:0;
-    background:#fff;
-    width:240px;
-    padding:20px;
-    flex-direction:column;
-    align-items:flex-start;
-    box-shadow:0 5px 20px rgba(0,0,0,.1);
-  }
-
-  .nav-links.active{
-    display:flex;
-  }
-
-  .menu-btn{
-    display:block;
-  }
-
-  .booking-form,
-  .services,
-  .hotels,
-  .packages{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .about-container,
-  .contact-container,
-  .footer-content{
-    grid-template-columns:1fr;
-  }
-}
-
 @media(max-width:600px){
-
-  .hero{
-    min-height:550px;
-  }
-
-  .hero h1{
-    font-size:35px;
-  }
-
-  .hero p{
-    font-size:16px;
-  }
-
-  .booking-form,
-  .services,
-  .hotels,
-  .packages{
-    grid-template-columns:1fr;
-  }
-
-  .auth-area{
-    display:none;
-  }
-
-  section{
-    padding:50px 5%;
-  }
-
-  .booking-box{
-    width:92%;
-    padding:20px;
-  }
-
-  .section-title h2{
-    font-size:29px;
-  }
+  .hero{min-height:550px;}
+  .hero h1{font-size:35px;}
+  .hero p{font-size:16px;}
+  .auth-area{display:none;}
+  .flight-grid,.services,.hotels,.packages{grid-template-columns:1fr;}
+  .flight-card{grid-template-columns:1fr;}
+  section{padding:50px 5%;}
+  .booking-box{width:94%;padding:20px;}
+  .section-title h2{font-size:29px;}
 }
 </style>
 </head>
-
 <body>
 
 <!-- NAVBAR -->
-
 <nav class="navbar">
-
-  <div class="logo">
-    Travel<span>Paradise</span>
-  </div>
-
+  <div class="logo">Travel<span>Paradise</span></div>
   <ul class="nav-links" id="navLinks">
-
     <li><a href="#home">Home</a></li>
     <li><a href="#services">Services</a></li>
+    <li><a href="#flights">Flights</a></li>
     <li><a href="#hotels">Hotels</a></li>
     <li><a href="#packages">Packages</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#contact">Contact</a></li>
-
   </ul>
-
   <div class="auth-area" id="authArea">
-
-    <button class="btn btn-small btn-blue" onclick="openLogin()">
-      Login
-    </button>
-
-    <button class="btn btn-small" onclick="openSignup()">
-      Sign Up
-    </button>
-
+    <button class="btn btn-small btn-blue" onclick="openLogin()">Login</button>
+    <button class="btn btn-small" onclick="openSignup()">Sign Up</button>
   </div>
-
   <div class="user-menu" id="userMenu">
-
-    <div class="user-avatar" id="userAvatar">
-      U
-    </div>
-
-    <button class="btn btn-small btn-blue" onclick="openDashboard()">
-      Account
-    </button>
-
-    <button class="btn btn-small" onclick="logoutUser()">
-      Logout
-    </button>
-
+    <div class="user-avatar" id="userAvatar">U</div>
+    <button class="btn btn-small btn-blue" onclick="openDashboard()">Account</button>
+    <button class="btn btn-small" onclick="logoutUser()">Logout</button>
   </div>
-
-  <div class="menu-btn" onclick="toggleMenu()">
-    ☰
-  </div>
-
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
 </nav>
 
-
 <!-- HERO -->
-
 <section class="hero" id="home">
-
   <div class="hero-content">
-
-    <h1>
-      Explore The World With
-      <span>Us</span>
-    </h1>
-
-    <p>
-      Hotel Booking, Flight Booking, Visa Processing
-      & Complete Travel Solutions
-    </p>
-
+    <h1>Explore The World With <span>Us</span></h1>
+    <p>International Flight Booking, Hotel Booking, Visa Processing & Complete Travel Solutions</p>
     <div class="hero-buttons">
-
-      <a href="#hotels" class="btn">
-        Find Your Hotel
-      </a>
-
-      <a href="#contact" class="btn btn-blue">
-        Contact Us
-      </a>
-
+      <a href="#flights" class="btn">✈ Search Flights</a>
+      <a href="#hotels" class="btn btn-blue">🏨 Find Hotel</a>
     </div>
-
   </div>
-
 </section>
 
+<!-- BOOKING & AUTO VISA CHECK ENGINE -->
+<div class="booking-box" id="flights">
+  <h2>✈️ Search & Automated Services</h2>
+  <div class="booking-tabs">
+    <button class="booking-tab active" onclick="switchBookingTab('flightPanel',this)">✈️ Flights</button>
+    <button class="booking-tab" onclick="switchBookingTab('hotelPanel',this)">🏨 Hotels</button>
+    <button class="booking-tab" onclick="switchBookingTab('visaCheckPanel',this)">🛂 Auto Visa Check</button>
+  </div>
 
-<!-- HOTEL SEARCH -->
-
-<div class="booking-box">
-
-  <h2>🏨 Search & Book Your Hotel</h2>
-
-  <form class="booking-form" onsubmit="searchHotel(event)">
-
-    <div class="input-group">
-
-      <label>Destination</label>
-
-      <input
-        type="text"
-        id="destination"
-        placeholder="e.g. Cox's Bazar"
-        required
-      >
-
+  <!-- FLIGHT PANEL -->
+  <div class="booking-panel active" id="flightPanel">
+    <div class="flight-search">
+      <div class="trip-type">
+        <label><input type="radio" name="tripType" value="round" checked onchange="toggleReturnDate()"> Round Trip</label>
+        <label><input type="radio" name="tripType" value="oneway" onchange="toggleReturnDate()"> One Way</label>
+      </div>
+      <form onsubmit="searchFlights(event)">
+        <div class="flight-grid">
+          <div class="input-group"><label>From</label><input id="flightFrom" type="text" placeholder="DAC - Dhaka" required></div>
+          <div class="input-group"><label>To</label><input id="flightTo" type="text" placeholder="DXB - Dubai" required></div>
+          <div class="input-group"><label>Departure</label><input id="flightDeparture" type="date" required></div>
+          <div class="input-group" id="returnDateBox"><label>Return</label><input id="flightReturn" type="date"></div>
+          <div class="input-group">
+            <label>Passengers</label>
+            <select id="flightPassengers">
+              <option value="1">1 Adult</option><option value="2">2 Adults</option><option value="3">3 Adults</option><option value="4">4 Adults</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Class</label>
+            <select id="flightClass"><option>Economy</option><option>Business</option><option>First Class</option></select>
+          </div>
+          <button class="btn" type="submit">Search</button>
+        </div>
+      </form>
     </div>
-
-    <div class="input-group">
-
-      <label>Check-in</label>
-
-      <input
-        type="date"
-        id="checkin"
-        required
-      >
-
+    <div class="flight-results" id="flightResults">
+      <h3>Available Flights</h3>
+      <div id="flightList"></div>
     </div>
+  </div>
 
-    <div class="input-group">
+  <!-- HOTEL PANEL -->
+  <div class="booking-panel" id="hotelPanel">
+    <form class="booking-form" onsubmit="searchHotel(event)">
+      <div class="input-group"><label>Destination</label><input type="text" id="destination" placeholder="e.g. Cox's Bazar" required></div>
+      <div class="input-group"><label>Check-in</label><input type="date" id="checkin" required></div>
+      <div class="input-group"><label>Check-out</label><input type="date" id="checkout" required></div>
+      <div class="input-group">
+        <label>Guests</label>
+        <select id="guests"><option>1 Guest</option><option>2 Guests</option><option>3 Guests</option></select>
+      </div>
+      <button class="btn" type="submit">Search Hotels</button>
+    </form>
+  </div>
 
-      <label>Check-out</label>
-
-      <input
-        type="date"
-        id="checkout"
-        required
-      >
-
+  <!-- AUTO VISA CHECK PANEL (VPS AUTOMATION INTEGRATION) -->
+  <div class="booking-panel" id="visaCheckPanel">
+    <div class="flight-search">
+      <h3 style="color:#0077b6; margin-bottom:15px;">প্রবাসীর অটো ভিসা চেক ও রিপোর্ট জেনারেটর</h3>
+      <div class="input-group"><label>আপনার নাম</label><input type="text" id="autoCustomerName" placeholder="Full Name" required></div>
+      <div class="input-group"><label>পাসপোর্ট নম্বর</label><input type="text" id="autoPassport" placeholder="Passport Number" required></div>
+      <div class="input-group">
+        <label>গন্তব্য দেশ</label>
+        <select id="autoCountry">
+          <option value="Saudi Arabia">সৌদি আরব</option>
+          <option value="UAE">দুবাই / ইউএই</option>
+          <option value="Malaysia">মালয়েশিয়া</option>
+        </select>
+      </div>
+      <div class="input-group"><label>পেমেন্ট ট্রানজেকশন আইডি (TrxID)</label><input type="text" id="autoTrxId" placeholder="Bkash/Nagad TrxID" required></div>
+      <button class="btn" type="button" onclick="submitAutoVisaCheck()">অটো চেক করুন ও পিডিএফ নিন</button>
+      <div id="autoCheckResult" style="margin-top:20px; font-weight:bold;"></div>
     </div>
-
-    <div class="input-group">
-
-      <label>Guests</label>
-
-      <select id="guests">
-
-        <option>1 Guest</option>
-        <option>2 Guests</option>
-        <option>3 Guests</option>
-        <option>4 Guests</option>
-        <option>5+ Guests</option>
-
-      </select>
-
-    </div>
-
-    <button class="btn" type="submit">
-      Search Hotels
-    </button>
-
-  </form>
-
+  </div>
 </div>
-
 
 <!-- SERVICES -->
-
 <section id="services">
-
-  <div class="section-title">
-
-    <h2>Our Services</h2>
-
-    <p>
-      Complete travel solutions in one place
-    </p>
-
-  </div>
-
+  <div class="section-title"><h2>Our Services</h2><p>Complete travel solutions in one place</p></div>
   <div class="services">
-
-    <div class="service-card">
-
-      <div class="service-icon">🏨</div>
-
-      <h3>Hotel Booking</h3>
-
-      <p>
-        Find and book hotels easily.
-      </p>
-
-    </div>
-
-    <div class="service-card">
-
-      <div class="service-icon">✈️</div>
-
-      <h3>Flight Booking</h3>
-
-      <p>
-        Domestic and international flights.
-      </p>
-
-    </div>
-
-    <div class="service-card">
-
-      <div class="service-icon">🛂</div>
-
-      <h3>Visa Processing</h3>
-
-      <p>
-        Professional visa assistance.
-      </p>
-
-    </div>
-
-    <div class="service-card">
-
-      <div class="service-icon">🚗</div>
-
-      <h3>Transport</h3>
-
-      <p>
-        Airport pickup and transport.
-      </p>
-
-    </div>
-
+    <div class="service-card"><div class="service-icon">✈️</div><h3>International Flights</h3><p>Search international routes and request flight bookings.</p></div>
+    <div class="service-card"><div class="service-icon">🏨</div><h3>Hotel Booking</h3><p>Find comfortable hotels at attractive prices.</p></div>
+    <div class="service-card"><div class="service-icon">🛂</div><h3>Visa Processing</h3><p>Professional visa assistance & auto checks.</p></div>
+    <div class="service-card"><div class="service-icon">🚗</div><h3>Airport Transfer</h3><p>Airport pickup and transport services.</p></div>
   </div>
-
 </section>
-
 
 <!-- HOTELS -->
-
 <section id="hotels">
-
-  <div class="section-title">
-
-    <h2>Popular Hotels</h2>
-
-    <p>
-      Choose your destination
-    </p>
-
-  </div>
-
+  <div class="section-title"><h2>Popular Hotels</h2><p>Choose your destination</p></div>
   <div class="hotels">
-
     <div class="hotel-card">
-
-      <img
-        src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=900&q=80"
-      >
-
-      <div class="hotel-info">
-
-        <h3>
-          Luxury Beach Resort
-        </h3>
-
-        <div class="rating">
-          ★★★★★
-        </div>
-
-        <p>
-          📍 Cox's Bazar, Bangladesh
-        </p>
-
-        <div class="price">
-          ৳5,500 / Night
-        </div>
-
-        <button
-          class="btn"
-          onclick="bookHotel('Luxury Beach Resort')"
-        >
-          Book Now
-        </button>
-
-      </div>
-
+      <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=900&q=80">
+      <div class="hotel-info"><h3>Luxury Beach Resort</h3><div class="rating">★★★★★</div><p>📍 Cox's Bazar, Bangladesh</p><div class="price">৳5,500 / Night</div><button class="btn" onclick="bookHotel('Luxury Beach Resort')">Book Now</button></div>
     </div>
-
-
     <div class="hotel-card">
-
-      <img
-        src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=900&q=80"
-      >
-
-      <div class="hotel-info">
-
-        <h3>
-          City Grand Hotel
-        </h3>
-
-        <div class="rating">
-          ★★★★★
-        </div>
-
-        <p>
-          📍 Dhaka, Bangladesh
-        </p>
-
-        <div class="price">
-          ৳4,500 / Night
-        </div>
-
-        <button
-          class="btn"
-          onclick="bookHotel('City Grand Hotel')"
-        >
-          Book Now
-        </button>
-
-      </div>
-
+      <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=900&q=80">
+      <div class="hotel-info"><h3>City Grand Hotel</h3><div class="rating">★★★★★</div><p>📍 Dhaka, Bangladesh</p><div class="price">৳4,500 / Night</div><button class="btn" onclick="bookHotel('City Grand Hotel')">Book Now</button></div>
     </div>
-
-
     <div class="hotel-card">
-
-      <img
-        src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80"
-      >
-
-      <div class="hotel-info">
-
-        <h3>
-          Mountain View Resort
-        </h3>
-
-        <div class="rating">
-          ★★★★☆
-        </div>
-
-        <p>
-          📍 Bandarban, Bangladesh
-        </p>
-
-        <div class="price">
-          ৳3,800 / Night
-        </div>
-
-        <button
-          class="btn"
-          onclick="bookHotel('Mountain View Resort')"
-        >
-          Book Now
-        </button>
-
-      </div>
-
+      <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80">
+      <div class="hotel-info"><h3>Mountain View Resort</h3><div class="rating">★★★★☆</div><p>📍 Bandarban, Bangladesh</p><div class="price">৳3,800 / Night</div><button class="btn" onclick="bookHotel('Mountain View Resort')">Book Now</button></div>
     </div>
-
   </div>
-
 </section>
-
 
 <!-- ABOUT -->
-
 <section class="about" id="about">
-
   <div class="about-container">
-
+    <div><img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1000&q=80"></div>
     <div>
-
-      <img
-        src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1000&q=80"
-      >
-
+      <h2>Travel With Confidence</h2>
+      <p>Travel Paradise is a modern travel agency providing simple, safe and convenient travel and immigration services[cite: 3].</p>
+      <a href="#contact" class="btn">Get In Touch</a>
     </div>
-
-    <div>
-
-      <h2>
-        Travel With Confidence
-      </h2>
-
-      <p>
-        Travel Paradise is a modern travel agency
-        providing simple, safe and convenient travel services.
-      </p>
-
-      <p>
-        Hotel booking, flight booking, visa assistance,
-        tour packages and more.
-      </p>
-
-      <a href="#contact" class="btn">
-        Get In Touch
-      </a>
-
-    </div>
-
   </div>
-
 </section>
-
 
 <!-- PACKAGES -->
-
 <section id="packages">
-
-  <div class="section-title">
-
-    <h2>
-      Popular Tour Packages
-    </h2>
-
-    <p>
-      Discover amazing destinations
-    </p>
-
-  </div>
-
+  <div class="section-title"><h2>Popular Tour Packages</h2><p>Discover amazing destinations</p></div>
   <div class="packages">
-
-    <div class="package">
-
-      <h3>
-        🏖️ Cox's Bazar Tour
-      </h3>
-
-      <p>
-        3 Days / 2 Nights
-      </p>
-
-      <ul>
-
-        <li>Hotel Accommodation</li>
-        <li>Breakfast</li>
-        <li>Local Transport</li>
-        <li>Tour Guide</li>
-
-      </ul>
-
-      <button
-        class="btn"
-        onclick="bookPackage('Coxs Bazar Tour')"
-      >
-        Book Package
-      </button>
-
-    </div>
-
-
-    <div class="package">
-
-      <h3>
-        ⛰️ Bandarban Tour
-      </h3>
-
-      <p>
-        3 Days / 2 Nights
-      </p>
-
-      <ul>
-
-        <li>Hotel Accommodation</li>
-        <li>Breakfast</li>
-        <li>Transport</li>
-        <li>Tour Guide</li>
-
-      </ul>
-
-      <button
-        class="btn"
-        onclick="bookPackage('Bandarban Tour')"
-      >
-        Book Package
-      </button>
-
-    </div>
-
-
-    <div class="package">
-
-      <h3>
-        🌊 Saint Martin Tour
-      </h3>
-
-      <p>
-        2 Days / 1 Night
-      </p>
-
-      <ul>
-
-        <li>Resort Accommodation</li>
-        <li>Breakfast</li>
-        <li>Boat Ticket</li>
-        <li>Tour Support</li>
-
-      </ul>
-
-      <button
-        class="btn"
-        onclick="bookPackage('Saint Martin Tour')"
-      >
-        Book Package
-      </button>
-
-    </div>
-
+    <div class="package"><h3>🏖️ Cox's Bazar Tour</h3><p>3 Days / 2 Nights</p><ul><li>Hotel</li><li>Breakfast</li><li>Transport</li></ul><button class="btn" onclick="bookPackage('Coxs Bazar Tour')">Book Package</button></div>
+    <div class="package"><h3>⛰️ Bandarban Tour</h3><p>3 Days / 2 Nights</p><ul><li>Hotel</li><li>Breakfast</li><li>Guide</li></ul><button class="btn" onclick="bookPackage('Bandarban Tour')">Book Package</button></div>
+    <div class="package"><h3>🌊 Saint Martin Tour</h3><p>2 Days / 1 Night</p><ul><li>Resort</li><li>Breakfast</li><li>Boat Ticket</li></ul><button class="btn" onclick="bookPackage('Saint Martin Tour')">Book Package</button></div>
   </div>
-
 </section>
-
 
 <!-- DASHBOARD -->
-
 <section class="dashboard" id="dashboard">
-
   <div class="dashboard-card">
-
-    <h2>
-      👤 My Account
-    </h2>
-
-    <p id="accountEmail">
-      Loading...
-    </p>
-
+    <h2>👤 My Account</h2>
+    <p id="accountEmail">Loading...</p>
     <div class="booking-list">
-
-      <h3>
-        My Bookings
-      </h3>
-
-      <div id="bookingList">
-        <div class="loading">
-          Loading bookings...
-        </div>
-      </div>
-
+      <h3>My Bookings & Reports</h3>
+      <div id="bookingList"><div class="loading">Loading bookings...</div></div>
     </div>
-
   </div>
-
 </section>
-
 
 <!-- CONTACT -->
-
 <section class="contact" id="contact">
-
-  <div class="section-title">
-
-    <h2>
-      Contact Us
-    </h2>
-
-    <p>
-      Ready to plan your next trip?
-    </p>
-
-  </div>
-
+  <div class="section-title"><h2>Contact Us</h2><p>Ready to plan your next trip?</p></div>
   <div class="contact-container">
-
     <div class="contact-info">
-
-      <h3>
-        Travel Paradise
-      </h3>
-
-      <p>📍 Dhaka, Bangladesh</p>
-
-      <p>📞 +880 16237-44440</p>
-
-      <p>📧 info.atik@travelparadise.com</p>
-
-      <p>🕒 Sat - Thu: 9:00 AM - 9:00 PM</p>
-
-      <br>
-
-      <p>
-        Contact us for hotel booking, flight booking,
-        visa processing and tour packages.
-      </p>
-
+      <h3>Travel Paradise</h3>
+      <p>📍 Dhaka, Bangladesh[cite: 3]</p>
+      <p>📞 +880 16237-44440[cite: 3]</p>
+      <p>📧 info.atik@travelparadise.com[cite: 3]</p>
     </div>
-
-
     <div class="contact-form">
-
       <form onsubmit="sendMessage(event)">
-
-        <input
-          id="contactName"
-          class="form-control"
-          type="text"
-          placeholder="Your Name"
-          required
-        >
-
-        <input
-          id="contactPhone"
-          class="form-control"
-          type="tel"
-          placeholder="Phone Number"
-          required
-        >
-
-        <input
-          id="contactEmail"
-          class="form-control"
-          type="email"
-          placeholder="Email Address"
-        >
-
-        <textarea
-          id="contactMessage"
-          class="form-control"
-          placeholder="How can we help you?"
-          required
-        ></textarea>
-
-        <button
-          class="btn"
-          type="submit"
-        >
-          Send Message
-        </button>
-
+        <input id="contactName" class="form-control" type="text" placeholder="Your Name" required>
+        <input id="contactPhone" class="form-control" type="tel" placeholder="Phone Number" required>
+        <input id="contactEmail" class="form-control" type="email" placeholder="Email Address">
+        <textarea id="contactMessage" class="form-control" placeholder="How can we help you?" required></textarea>
+        <button class="btn" type="submit">Send Message</button>
       </form>
-
     </div>
-
   </div>
-
 </section>
 
-
 <!-- FOOTER -->
-
 <footer>
-
   <div class="footer-content">
-
-    <div>
-
-      <h3>
-        Travel Paradise
-      </h3>
-
-      <p>
-        Your trusted partner for hotel booking,
-        flight booking and complete travel solutions.
-      </p>
-
-    </div>
-
-    <div>
-
-      <h3>
-        Quick Links
-      </h3>
-
-      <ul class="footer-links">
-
-        <li><a href="#home">Home</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#hotels">Hotels</a></li>
-        <li><a href="#packages">Packages</a></li>
-
-      </ul>
-
-    </div>
-
-    <div>
-
-      <h3>
-        Contact
-      </h3>
-
-      <p>
-        📞 +880 16237-44440
-      </p>
-
-      <p>
-        📧 info.atik@travelparadise.com
-      </p>
-
-    </div>
-
+    <div><h3>Travel Paradise</h3><p>Your trusted partner for international flights, hotels and automated visa processing[cite: 3].</p></div>
+    <div><h3>Quick Links</h3><ul class="footer-links"><li><a href="#home">Home</a></li><li><a href="#flights">Flights</a></li><li><a href="#hotels">Hotels</a></li></ul></div>
+    <div><h3>Contact</h3><p>📞 +880 16237-44440[cite: 3]</p><p>📧 info.atik@travelparadise.com[cite: 3]</p></div>
   </div>
-
-  <div class="copyright">
-
-    © 2026 Travel Paradise.
-    All Rights Reserved.
-
-  </div>
-
+  <div class="copyright">© 2026 Travel Paradise. All Rights Reserved[cite: 3].</div>
 </footer>
 
+<a class="whatsapp" href="https://wa.me/8801623744440" target="_blank">☎</a>
 
-<!-- WHATSAPP -->
-
-<a
-  class="whatsapp"
-  href="https://wa.me/8801623744440"
-  target="_blank"
->
-  ☎
-</a>
-
-
-<!-- LOGIN MODAL -->
-
+<!-- MODALS -->
 <div class="modal" id="loginModal">
-
   <div class="modal-box">
-
-    <span class="close" onclick="closeModals()">
-      ×
-    </span>
-
-    <h2>
-      Login
-    </h2>
-
-    <input
-      type="email"
-      id="loginEmail"
-      placeholder="Email Address"
-    >
-
-    <input
-      type="password"
-      id="loginPassword"
-      placeholder="Password"
-    >
-
-    <button
-      class="btn btn-blue"
-      onclick="loginUser()"
-    >
-      Login
-    </button>
-
-    <div
-      class="modal-link"
-      onclick="resetPassword()"
-    >
-      Forgot Password?
-    </div>
-
-    <div
-      class="modal-link"
-      onclick="openSignup()"
-    >
-      Don't have an account? Sign Up
-    </div>
-
+    <span class="close" onclick="closeModals()">×</span>
+    <h2>Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email Address">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <button class="btn btn-blue" onclick="loginUser()">Login</button>
+    <div class="modal-link" onclick="resetPassword()">Forgot Password?</div>
+    <div class="modal-link" onclick="openSignup()">Don't have an account? Sign Up</div>
   </div>
-
 </div>
-
-
-<!-- SIGNUP MODAL -->
 
 <div class="modal" id="signupModal">
-
   <div class="modal-box">
-
-    <span class="close" onclick="closeModals()">
-      ×
-    </span>
-
-    <h2>
-      Create Account
-    </h2>
-
-    <input
-      type="text"
-      id="signupName"
-      placeholder="Full Name"
-    >
-
-    <input
-      type="email"
-      id="signupEmail"
-      placeholder="Email Address"
-    >
-
-    <input
-      type="password"
-      id="signupPassword"
-      placeholder="Password"
-    >
-
-    <button
-      class="btn"
-      onclick="signupUser()"
-    >
-      Create Account
-    </button>
-
-    <div
-      class="modal-link"
-      onclick="openLogin()"
-    >
-      Already have an account? Login
-    </div>
-
+    <span class="close" onclick="closeModals()">×</span>
+    <h2>Create Account</h2>
+    <input type="text" id="signupName" placeholder="Full Name">
+    <input type="email" id="signupEmail" placeholder="Email Address">
+    <input type="password" id="signupPassword" placeholder="Password">
+    <button class="btn" onclick="signupUser()">Create Account</button>
+    <div class="modal-link" onclick="openLogin()">Already have an account? Login</div>
   </div>
-
 </div>
-
-
-<!-- BOOKING MODAL -->
 
 <div class="modal" id="bookingModal">
-
   <div class="modal-box">
-
-    <span class="close" onclick="closeModals()">
-      ×
-    </span>
-
-    <h2>
-      Complete Booking
-    </h2>
-
-    <input
-      type="text"
-      id="bookingItem"
-      readonly
-    >
-
-    <input
-      type="text"
-      id="bookingName"
-      placeholder="Your Full Name"
-    >
-
-    <input
-      type="tel"
-      id="bookingPhone"
-      placeholder="Phone Number"
-    >
-
-    <input
-      type="date"
-      id="bookingDate"
-    >
-
-    <input
-      type="number"
-      id="bookingGuests"
-      placeholder="Number of Guests"
-      min="1"
-      value="1"
-    >
-
-    <button
-      class="btn"
-      onclick="submitBooking()"
-    >
-      Confirm Booking
-    </button>
-
+    <span class="close" onclick="closeModals()">×</span>
+    <h2>Complete Booking</h2>
+    <input type="text" id="bookingItem" readonly>
+    <input type="text" id="bookingName" placeholder="Your Full Name">
+    <input type="tel" id="bookingPhone" placeholder="Phone Number">
+    <input type="date" id="bookingDate">
+    <input type="number" id="bookingGuests" placeholder="Number of Guests" min="1" value="1">
+    <button class="btn" onclick="submitBooking()">Confirm Booking</button>
   </div>
-
 </div>
-
 
 <div class="toast" id="toast"></div>
 
-
-<!-- FIREBASE -->
-
+<!-- FIREBASE & AUTOMATION SCRIPT -->
 <script type="module">
-
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  sendPasswordResetEmail,
-  updateProfile
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  query,
-  where,
-  orderBy,
-  getDocs,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-
-/* YOUR FIREBASE CONFIG */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, query, where, orderBy, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
-
-  apiKey:
-    "AIzaSyDcgH4GfMmixsJh4rLGSjusIqqW6JrEo44",
-
-  authDomain:
-    "travel-1a6b1.firebaseapp.com",
-
-  projectId:
-    "travel-1a6b1",
-
-  storageBucket:
-    "travel-1a6b1.firebasestorage.app",
-
-  messagingSenderId:
-    "519605106219",
-
-  appId:
-    "1:519605106219:web:c6ba3277bf5dedf7209c6e",
-
-  measurementId:
-    "G-6G2PKE332"
+  apiKey: "AIzaSyDcgH4GfMmixsJh4rLGSjusIqqW6JrEo44",
+  authDomain: "travel-1a6b1.firebaseapp.com",
+  projectId: "travel-1a6b1",
+  storageBucket: "travel-1a6b1.firebasestorage.app",
+  messagingSenderId: "519605106219",
+  appId: "1:519605106219:web:c6ba3277bf5dedf7209c6e",
+  measurementId: "G-6G2PKE332"
 };
-
-
-/* INITIALIZE FIREBASE */
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
-
 const db = getFirestore(app);
 
-
-/* GLOBAL USER */
-
 let currentUser = null;
-
 let selectedBooking = "";
 
-
-/* TOAST */
-
 function showToast(message){
-
-  const toast =
-    document.getElementById("toast");
-
+  const toast = document.getElementById("toast");
   toast.textContent = message;
-
   toast.classList.add("show");
-
-  setTimeout(() => {
-
-    toast.classList.remove("show");
-
-  },3000);
+  setTimeout(() => { toast.classList.remove("show"); }, 3000);
 }
 
+window.toggleMenu = function(){ document.getElementById("navLinks").classList.toggle("active"); };
 
-/* MENU */
-
-window.toggleMenu = function(){
-
-  document
-    .getElementById("navLinks")
-    .classList.toggle("active");
-
+window.switchBookingTab = function(panelId, button){
+  document.querySelectorAll(".booking-panel").forEach(panel => panel.classList.remove("active"));
+  document.querySelectorAll(".booking-tab").forEach(tab => tab.classList.remove("active"));
+  document.getElementById(panelId).classList.add("active");
+  button.classList.add("active");
 };
 
-
-/* MODALS */
-
-window.openLogin = function(){
-
-  closeModals();
-
-  document
-    .getElementById("loginModal")
-    .classList.add("active");
-
+window.toggleReturnDate = function(){
+  const type = document.querySelector('input[name="tripType"]:checked').value;
+  const box = document.getElementById("returnDateBox");
+  const input = document.getElementById("flightReturn");
+  if(type === "oneway"){ box.style.display = "none"; input.required = false; }
+  else{ box.style.display = "block"; input.required = true; }
 };
 
-
-window.openSignup = function(){
-
-  closeModals();
-
-  document
-    .getElementById("signupModal")
-    .classList.add("active");
-
-};
-
-
-window.closeModals = function(){
-
-  document
-    .querySelectorAll(".modal")
-    .forEach(modal => {
-
-      modal.classList.remove("active");
-
-    });
-
-};
-
-
-/* SIGN UP */
+window.openLogin = function(){ closeModals(); document.getElementById("loginModal").classList.add("active"); };
+window.openSignup = function(){ closeModals(); document.getElementById("signupModal").classList.add("active"); };
+window.closeModals = function(){ document.querySelectorAll(".modal").forEach(modal => modal.classList.remove("active")); };
 
 window.signupUser = async function(){
-
-  const name =
-    document.getElementById("signupName").value.trim();
-
-  const email =
-    document.getElementById("signupEmail").value.trim();
-
-  const password =
-    document.getElementById("signupPassword").value;
-
-
-  if(!name || !email || !password){
-
-    showToast("Please fill all fields.");
-
-    return;
-  }
-
-
-  if(password.length < 6){
-
-    showToast("Password must be at least 6 characters.");
-
-    return;
-  }
-
-
+  const name = document.getElementById("signupName").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value;
+  if(!name || !email || !password){ showToast("Please fill all fields."); return; }
   try{
-
-    const result =
-      await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-
-    await updateProfile(
-      result.user,
-      {
-        displayName:name
-      }
-    );
-
-
-    await addDoc(
-      collection(db,"users"),
-      {
-        uid:result.user.uid,
-        name:name,
-        email:email,
-        createdAt:serverTimestamp()
-      }
-    );
-
-
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(result.user, { displayName: name });
+    await addDoc(collection(db, "users"), { uid: result.user.uid, name: name, email: email, createdAt: serverTimestamp() });
     closeModals();
-
-    showToast(
-      "Account created successfully!"
-    );
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    showToast(
-      firebaseError(error.code)
-    );
-
-  }
-
+    showToast("Account created successfully!");
+  }catch(error){ showToast("Error signing up."); }
 };
-
-
-/* LOGIN */
 
 window.loginUser = async function(){
-
-  const email =
-    document.getElementById("loginEmail").value.trim();
-
-  const password =
-    document.getElementById("loginPassword").value;
-
-
-  if(!email || !password){
-
-    showToast("Enter email and password.");
-
-    return;
-  }
-
-
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  if(!email || !password){ showToast("Enter email and password."); return; }
   try{
-
-    await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
-
+    await signInWithEmailAndPassword(auth, email, password);
     closeModals();
-
-    showToast(
-      "Login successful!"
-    );
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    showToast(
-      firebaseError(error.code)
-    );
-
-  }
-
+    showToast("Login successful!");
+  }catch(error){ showToast("Incorrect email or password."); }
 };
-
-
-/* PASSWORD RESET */
 
 window.resetPassword = async function(){
-
-  const email =
-    document.getElementById("loginEmail").value.trim();
-
-
-  if(!email){
-
-    showToast(
-      "Enter your email first."
-    );
-
-    return;
-  }
-
-
-  try{
-
-    await sendPasswordResetEmail(
-      auth,
-      email
-    );
-
-    showToast(
-      "Password reset email sent."
-    );
-
-  }
-  catch(error){
-
-    showToast(
-      firebaseError(error.code)
-    );
-
-  }
-
+  const email = document.getElementById("loginEmail").value.trim();
+  if(!email){ showToast("Enter your email first."); return; }
+  try{ await sendPasswordResetEmail(auth, email); showToast("Password reset email sent."); }catch(error){ showToast("Error sending reset email."); }
 };
-
-
-/* LOGOUT */
 
 window.logoutUser = async function(){
-
-  try{
-
-    await signOut(auth);
-
-    showToast(
-      "Logged out successfully."
-    );
-
-    document
-      .getElementById("dashboard")
-      .style.display = "none";
-
-  }
-  catch(error){
-
-    showToast(
-      "Logout failed."
-    );
-
-  }
-
+  try{ await signOut(auth); showToast("Logged out successfully."); document.getElementById("dashboard").style.display = "none"; }catch(error){ showToast("Logout failed."); }
 };
 
-
-/* AUTH STATE */
-
-onAuthStateChanged(
-  auth,
-  user => {
-
-    currentUser = user;
-
-
-    const authArea =
-      document.getElementById("authArea");
-
-    const userMenu =
-      document.getElementById("userMenu");
-
-
-    if(user){
-
-      authArea.style.display = "none";
-
-      userMenu.style.display = "flex";
-
-
-      const avatar =
-        document.getElementById("userAvatar");
-
-      const name =
-        user.displayName ||
-        user.email.charAt(0).toUpperCase();
-
-
-      avatar.textContent =
-        name.charAt(0).toUpperCase();
-
-    }
-    else{
-
-      authArea.style.display = "flex";
-
-      userMenu.style.display = "none";
-
-    }
-
+onAuthStateChanged(auth, user => {
+  currentUser = user;
+  const authArea = document.getElementById("authArea");
+  const userMenu = document.getElementById("userMenu");
+  if(user){
+    authArea.style.display = "none";
+    userMenu.style.display = "flex";
+    document.getElementById("userAvatar").textContent = (user.displayName || user.email).charAt(0).toUpperCase();
+  } else {
+    authArea.style.display = "flex";
+    userMenu.style.display = "none";
   }
-);
-
-
-/* DASHBOARD */
+});
 
 window.openDashboard = async function(){
-
-  if(!currentUser){
-
-    openLogin();
-
-    return;
-
-  }
-
-
-  const dashboard =
-    document.getElementById("dashboard");
-
-
+  if(!currentUser){ openLogin(); return; }
+  const dashboard = document.getElementById("dashboard");
   dashboard.style.display = "block";
-
-
-  dashboard.scrollIntoView({
-    behavior:"smooth"
-  });
-
-
-  document.getElementById(
-    "accountEmail"
-  ).textContent =
-    "Logged in as: " +
-    currentUser.email;
-
-
+  dashboard.scrollIntoView({ behavior: "smooth" });
+  document.getElementById("accountEmail").textContent = "Logged in as: " + currentUser.email;
   loadBookings();
-
 };
 
+/* VPS AUTOMATED VISA CHECK FUNCTION */
+window.submitAutoVisaCheck = async function(){
+  const name = document.getElementById("autoCustomerName").value.trim();
+  const passport = document.getElementById("autoPassport").value.trim();
+  const country = document.getElementById("autoCountry").value;
+  const trxid = document.getElementById("autoTrxId").value.trim();
+  const resultDiv = document.getElementById("autoCheckResult");
 
-/* HOTEL SEARCH */
-
-window.searchHotel = function(event){
-
-  event.preventDefault();
-
-
-  const destination =
-    document
-      .getElementById("destination")
-      .value.trim();
-
-
-  const checkin =
-    document.getElementById("checkin").value;
-
-  const checkout =
-    document.getElementById("checkout").value;
-
-  const guests =
-    document.getElementById("guests").value;
-
-
-  if(checkout <= checkin){
-
-    showToast(
-      "Check-out must be after check-in."
-    );
-
+  if(!name || !passport || !trxid){
+    alert('দয়া করে সব ঘরগুলো পূরণ করুন!');
     return;
-
   }
 
+  resultDiv.innerHTML = "অটোমেটেড প্রসেসিং চলছে, দয়া করে অপেক্ষা করুন...";
 
-  showToast(
-    "Searching hotels in " +
-    destination +
-    "..."
-  );
-
-
-  document
-    .getElementById("hotels")
-    .scrollIntoView({
-      behavior:"smooth"
+  try {
+    // এখানে YOUR_VPS_IP এর জায়গায় আপনার ৮ কোরের VPS-এর আসল আইপি এড্রেস বসাবেন
+    let response = await fetch('http://YOUR_VPS_IP:8000/api/auto-visa-check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            customer_name: name,
+            passport_number: passport,
+            country_name: country,
+            transaction_id: trxid
+        })
     });
 
-};
-
-
-/* HOTEL BOOKING */
-
-window.bookHotel = function(hotelName){
-
-  selectedBooking = hotelName;
-
-  document
-    .getElementById("bookingItem")
-    .value = hotelName;
-
-
-  if(currentUser){
-
-    document
-      .getElementById("bookingName")
-      .value =
-      currentUser.displayName || "";
-
+    let data = await response.json();
+    if(response.ok) {
+        resultDiv.innerHTML = `সফল! আপনার কাজ সম্পন্ন হয়েছে। <br><a href="http://YOUR_VPS_IP:8000${data.download_url}" target="_blank" style="color:#ff7b00; text-decoration:underline;">ডাউনলোড রিপোর্ট (PDF)</a>`;
+    } else {
+        resultDiv.innerHTML = "সমস্যা হয়েছে: " + (data.detail || "অনুরোধ ব্যর্থ হয়েছে।");
+    }
+  } catch(err) {
+    resultDiv.innerHTML = "সার্ভার কানেকশনে সমস্যা হচ্ছে। দয়া করে আপনার VPS ব্যাকএন্ড চেক করুন।";
   }
-
-
-  document
-    .getElementById("bookingModal")
-    .classList.add("active");
-
 };
 
-
-/* PACKAGE BOOKING */
-
-window.bookPackage = function(packageName){
-
-  selectedBooking = packageName;
-
-  document
-    .getElementById("bookingItem")
-    .value = packageName;
-
-
-  if(currentUser){
-
-    document
-      .getElementById("bookingName")
-      .value =
-      currentUser.displayName || "";
-
-  }
-
-
-  document
-    .getElementById("bookingModal")
-    .classList.add("active");
-
+window.searchFlights = function(event){
+  event.preventDefault();
+  const from = document.getElementById("flightFrom").value.trim();
+  const to = document.getElementById("flightTo").value.trim();
+  const departure = document.getElementById("flightDeparture").value;
+  const passengers = document.getElementById("flightPassengers").value;
+  const flightClass = document.getElementById("flightClass").value;
+  
+  const results = document.getElementById("flightResults");
+  const list = document.getElementById("flightList");
+  results.style.display = "block";
+  list.innerHTML = `
+    <div class="flight-card">
+      <div><div class="airline-name">✈️ Sample International Airlines</div><small>Demo result</small></div>
+      <div><div class="flight-route">${from} → ${to}</div><small>${departure}</small></div>
+      <div><strong>${flightClass}</strong><small>${passengers} Passenger(s)</small></div>
+      <div><div class="flight-price">Request Fare</div><button class="btn btn-small" onclick="bookFlight('${from}','${to}','${departure}','${flightClass}','${passengers}')">Book Flight</button></div>
+    </div>`;
+  results.scrollIntoView({ behavior: "smooth", block: "nearest" });
 };
 
+window.bookFlight = function(from, to, departure, flightClass, passengers){
+  selectedBooking = "Flight: " + from + " → " + to;
+  document.getElementById("bookingItem").value = selectedBooking;
+  if(currentUser) document.getElementById("bookingName").value = currentUser.displayName || "";
+  document.getElementById("bookingDate").value = departure;
+  document.getElementById("bookingModal").classList.add("active");
+};
 
-/* SUBMIT BOOKING */
+window.searchHotel = function(event){ event.preventDefault(); showToast("Searching hotels..."); };
+window.bookHotel = function(hotelName){ selectedBooking = hotelName; document.getElementById("bookingItem").value = hotelName; document.getElementById("bookingModal").classList.add("active"); };
+window.bookPackage = function(packageName){ selectedBooking = packageName; document.getElementById("bookingItem").value = packageName; document.getElementById("bookingModal").classList.add("active"); };
 
 window.submitBooking = async function(){
-
-  if(!currentUser){
-
-    closeModals();
-
-    openLogin();
-
-    showToast(
-      "Please login before booking."
-    );
-
-    return;
-
-  }
-
-
-  const name =
-    document
-      .getElementById("bookingName")
-      .value.trim();
-
-  const phone =
-    document
-      .getElementById("bookingPhone")
-      .value.trim();
-
-  const date =
-    document
-      .getElementById("bookingDate")
-      .value;
-
-  const guests =
-    document
-      .getElementById("bookingGuests")
-      .value;
-
-
-  if(!name || !phone || !date){
-
-    showToast(
-      "Please complete all booking fields."
-    );
-
-    return;
-
-  }
-
-
+  if(!currentUser){ closeModals(); openLogin(); showToast("Please login before booking."); return; }
+  const name = document.getElementById("bookingName").value.trim();
+  const phone = document.getElementById("bookingPhone").value.trim();
+  const date = document.getElementById("bookingDate").value;
+  const guests = document.getElementById("bookingGuests").value;
+  if(!name || !phone || !date){ showToast("Please complete all fields."); return; }
   try{
-
-    await addDoc(
-      collection(db,"bookings"),
-      {
-
-        uid:currentUser.uid,
-
-        email:currentUser.email,
-
-        customerName:name,
-
-        phone:phone,
-
-        item:selectedBooking,
-
-        date:date,
-
-        guests:Number(guests),
-
-        status:"Pending",
-
-        createdAt:serverTimestamp()
-
-      }
-    );
-
-
+    await addDoc(collection(db, "bookings"), { uid: currentUser.uid, email: currentUser.email, customerName: name, phone: phone, item: selectedBooking, date: date, guests: Number(guests), status: "Pending", createdAt: serverTimestamp() });
     closeModals();
-
-
-    showToast(
-      "Booking submitted successfully!"
-    );
-
-
+    showToast("Booking submitted successfully!");
     loadBookings();
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    showToast(
-      "Could not save booking."
-    );
-
-  }
-
+  }catch(error){ showToast("Could not save booking."); }
 };
-
-
-/* LOAD BOOKINGS */
 
 async function loadBookings(){
-
-  if(!currentUser){
-
-    return;
-
-  }
-
-
-  const bookingList =
-    document.getElementById("bookingList");
-
-
-  bookingList.innerHTML =
-    '<div class="loading">Loading...</div>';
-
-
+  if(!currentUser) return;
+  const bookingList = document.getElementById("bookingList");
+  bookingList.innerHTML = '<div class="loading">Loading...</div>';
   try{
-
-    const q =
-      query(
-        collection(db,"bookings"),
-        where(
-          "uid",
-          "==",
-          currentUser.uid
-        ),
-        orderBy(
-          "createdAt",
-          "desc"
-        )
-      );
-
-
-    const snapshot =
-      await getDocs(q);
-
-
-    if(snapshot.empty){
-
-      bookingList.innerHTML =
-        "<p>No bookings found.</p>";
-
-      return;
-
-    }
-
-
+    const q = query(collection(db, "bookings"), where("uid", "==", currentUser.uid), orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+    if(snapshot.empty){ bookingList.innerHTML = "<p>No bookings found.</p>"; return; }
     bookingList.innerHTML = "";
-
-
     snapshot.forEach(doc => {
-
-      const data =
-        doc.data();
-
-
-      const div =
-        document.createElement("div");
-
-
-      div.className =
-        "booking-item";
-
-
-      div.innerHTML = `
-
-        <strong>
-          ${escapeHTML(data.item || "")}
-        </strong>
-
-        <p>
-          Date:
-          ${escapeHTML(data.date || "")}
-        </p>
-
-        <p>
-          Guests:
-          ${data.guests || 1}
-        </p>
-
-        <span class="status">
-          ${escapeHTML(data.status || "Pending")}
-        </span>
-
-      `;
-
-
+      const data = doc.data();
+      const div = document.createElement("div");
+      div.className = "booking-item";
+      div.innerHTML = `<strong>${data.item || ""}</strong><p>Date: ${data.date || ""}</p><p>Guests: ${data.guests || 1}</p><span class="status">${data.status || "Pending"}</span>`;
       bookingList.appendChild(div);
-
     });
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    bookingList.innerHTML =
-      "<p>Unable to load bookings.</p>";
-
-  }
-
+  }catch(error){ bookingList.innerHTML = "<p>Unable to load bookings.</p>"; }
 }
-
-
-/* CONTACT MESSAGE */
 
 window.sendMessage = async function(event){
-
   event.preventDefault();
-
-
-  const name =
-    document
-      .getElementById("contactName")
-      .value.trim();
-
-  const phone =
-    document
-      .getElementById("contactPhone")
-      .value.trim();
-
-  const email =
-    document
-      .getElementById("contactEmail")
-      .value.trim();
-
-  const message =
-    document
-      .getElementById("contactMessage")
-      .value.trim();
-
-
+  const name = document.getElementById("contactName").value.trim();
+  const phone = document.getElementById("contactPhone").value.trim();
+  const email = document.getElementById("contactEmail").value.trim();
+  const message = document.getElementById("contactMessage").value.trim();
   try{
-
-    await addDoc(
-      collection(db,"messages"),
-      {
-
-        name:name,
-
-        phone:phone,
-
-        email:email,
-
-        message:message,
-
-        uid:
-          currentUser
-            ? currentUser.uid
-            : null,
-
-        createdAt:
-          serverTimestamp()
-
-      }
-    );
-
-
+    await addDoc(collection(db, "messages"), { name, phone, email, message, uid: currentUser ? currentUser.uid : null, createdAt: serverTimestamp() });
     event.target.reset();
-
-
-    showToast(
-      "Message sent successfully!"
-    );
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    showToast(
-      "Message could not be sent."
-    );
-
-  }
-
+    showToast("Message sent successfully!");
+  }catch(error){ showToast("Message could not be sent."); }
 };
 
-
-/* FIREBASE ERROR */
-
-function firebaseError(code){
-
-  switch(code){
-
-    case "auth/email-already-in-use":
-      return "This email is already registered.";
-
-    case "auth/invalid-email":
-      return "Invalid email address.";
-
-    case "auth/weak-password":
-      return "Password is too weak.";
-
-    case "auth/invalid-credential":
-      return "Email or password is incorrect.";
-
-    case "auth/user-not-found":
-      return "User account not found.";
-
-    case "auth/wrong-password":
-      return "Incorrect password.";
-
-    default:
-      return "Something went wrong. Please try again.";
-
-  }
-
-}
-
-
-/* ESCAPE HTML */
-
-function escapeHTML(value){
-
-  return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
+toggleReturnDate();
 </script>
 
 </body>
