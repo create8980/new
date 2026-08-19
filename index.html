@@ -4,1514 +4,198 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Connectly — Social Network</title>
-
 <style>
-*{box-sizing:border-box}
-body{
- margin:0;
- font-family:Arial,Helvetica,sans-serif;
- background:#f0f2f5;
- color:#17202a;
- transition:.25s;
-}
-body.dark{background:#18191a;color:#e4e6eb}
-button,input,textarea{font:inherit}
-button{cursor:pointer;border:0}
-
-.hidden{display:none!important}
-
-.top{
- height:62px;background:#fff;border-bottom:1px solid #ddd;
- display:flex;align-items:center;padding:0 18px;gap:12px;
- position:sticky;top:0;z-index:20
-}
-.dark .top,.dark .card,.dark .panel,.dark .modal .box{
- background:#242526;color:#e4e6eb;border-color:#3a3b3c
-}
-.brand{font-size:25px;font-weight:800;color:#1877f2}
-.search{
- width:260px;background:#f0f2f5;border:0;border-radius:22px;
- padding:11px 15px;outline:0
-}
-.dark .search,.dark .fakeinput,.dark .chatrow,
-.dark .comments input,.dark textarea,.dark .form input{
- background:#3a3b3c;color:#e4e6eb
-}
-.topnav{margin-left:auto;display:flex;gap:7px;align-items:center}
-.icon{
- width:42px;height:42px;border-radius:50%;
- background:#f0f2f5;font-size:18px
-}
-.dark .icon{background:#3a3b3c}
-.av{
- width:40px;height:40px;border-radius:50%;
- display:grid;place-items:center;
- background:linear-gradient(135deg,#1877f2,#7b2ff7);
- color:#fff;font-weight:bold
-}
-
-.wrap{
- max-width:1280px;margin:auto;
- display:grid;grid-template-columns:235px minmax(0,650px) 280px;
- gap:18px;padding:18px
-}
-.left,.right{position:sticky;top:80px;height:max-content}
-
-.panel,.card{
- background:#fff;border-radius:12px;
- border:1px solid #ddd;margin-bottom:15px
-}
-.menu{padding:8px}
-.mi{
- padding:12px;border-radius:9px;font-weight:600;
- display:flex;gap:11px;align-items:center
-}
-.mi:hover{background:#f0f2f5}
-
-.stories{
- display:flex;gap:10px;padding:12px;overflow:auto
-}
-.story{
- min-width:112px;height:170px;border-radius:12px;color:#fff;
- padding:10px;display:flex;align-items:flex-end;
- font-weight:bold;background:linear-gradient(150deg,#1877f2,#833ab4)
-}
-.story:nth-child(2){background:linear-gradient(150deg,#ff512f,#dd2476)}
-.story:nth-child(3){background:linear-gradient(150deg,#11998e,#38ef7d)}
-.story:nth-child(4){background:linear-gradient(150deg,#4568dc,#b06ab3)}
-.story:nth-child(5){background:linear-gradient(150deg,#f7971e,#ffd200)}
-
-.composer{padding:14px}
-.row{display:flex;gap:10px;align-items:center}
-.fakeinput{
- flex:1;background:#f0f2f5;padding:12px 17px;
- border-radius:22px;color:#65676b;cursor:pointer
-}
-.quick{display:flex;border-top:1px solid #ddd;margin-top:13px;padding-top:9px}
-.quick button{
- background:#fff;flex:1;padding:10px;color:#65676b;
- font-weight:bold;border-radius:8px
-}
-.quick button:hover{background:#f0f2f5}
-
-.posthead{display:flex;gap:10px;padding:14px}
-.small{font-size:13px;color:#65676b}
-.body{padding:0 14px 14px;line-height:1.5;white-space:pre-wrap}
-.visual{
- height:260px;display:grid;place-items:center;
- font-size:58px;color:white;
- background:linear-gradient(135deg,#667eea,#764ba2)
-}
-.stats{
- display:flex;justify-content:space-between;
- padding:9px 14px;color:#65676b;font-size:14px
-}
-.postactions{
- display:flex;border-top:1px solid #ddd;
- border-bottom:1px solid #ddd;margin:0 14px
-}
-.postactions button{
- background:#fff;color:#65676b;font-weight:bold;
- flex:1;padding:10px
-}
-.dark .postactions button{background:#242526;color:#ddd}
-.postactions .active{color:#1877f2}
-
-.comments{display:none;padding:10px 14px}
-.comments input{
- width:100%;border:0;background:#f0f2f5;
- border-radius:20px;padding:10px 14px;outline:0
-}
-.commentlist{padding:0 14px 12px}
-.bubble{
- background:#f0f2f5;border-radius:12px;
- padding:8px 11px;margin-top:7px;font-size:14px
-}
-
-.side-title{font-weight:bold;padding:14px 14px 5px}
-.contact{
- display:flex;gap:9px;align-items:center;padding:9px 12px
-}
-.dot{
- width:9px;height:9px;background:#31a24c;
- border-radius:50%;margin-left:auto
-}
-.friendbtn{
- padding:7px 12px;border-radius:7px;
- background:#1877f2;color:#fff;font-weight:bold
-}
-.gray{background:#e4e6eb;color:#17202a}
-
-.modal{
- display:none;position:fixed;inset:0;background:#0008;
- z-index:100;align-items:center;justify-content:center;padding:18px
-}
-.modal.show{display:flex}
-.box{
- background:#fff;width:min(540px,100%);
- border-radius:14px;padding:18px;
- max-height:90vh;overflow:auto
-}
-.mh{
- display:flex;justify-content:space-between;
- border-bottom:1px solid #ddd;padding-bottom:12px;margin-bottom:14px
-}
-.close{
- width:34px;height:34px;border-radius:50%;
- background:#e4e6eb
-}
-.box textarea{
- width:100%;height:130px;resize:none;
- border:1px solid #ddd;border-radius:10px;
- padding:12px;outline:0
-}
-.primary{
- width:100%;margin-top:12px;background:#1877f2;
- color:white;padding:11px;border-radius:8px;font-weight:bold
-}
-
-.toast{
- position:fixed;right:18px;bottom:18px;
- background:#17202a;color:#fff;padding:12px 17px;
- border-radius:9px;display:none;z-index:150
-}
-.toast.show{display:block}
-
-.profile{text-align:center;padding:20px}
-.big{
- width:95px;height:95px;margin:auto;border-radius:50%;
- display:grid;place-items:center;
- background:linear-gradient(135deg,#1877f2,#7b2ff7);
- color:#fff;font-size:32px;font-weight:bold
-}
-.tabs{display:flex;border-top:1px solid #ddd;margin-top:15px}
-.tabs button{flex:1;background:#fff;padding:11px;font-weight:bold}
-
-.chatrow{
- padding:12px;background:#f0f2f5;
- border-radius:9px;margin:7px 0
-}
-
-.form input{
- width:100%;padding:11px;margin:7px 0;
- border:1px solid #ddd;border-radius:8px;outline:0
-}
-
-/* LOGIN */
-.auth{
- min-height:100vh;
- display:flex;
- align-items:center;
- justify-content:center;
- background:linear-gradient(135deg,#1877f2,#7b2ff7);
- padding:20px
-}
-.authbox{
- width:min(430px,100%);
- background:white;
- border-radius:16px;
- padding:30px;
- box-shadow:0 15px 50px #0004
-}
-.authlogo{
- text-align:center;
- font-size:34px;
- font-weight:900;
- color:#1877f2;
- margin-bottom:8px
-}
-.authsub{text-align:center;color:#65676b;margin-bottom:22px}
-.auth input{
- width:100%;
- padding:13px;
- border:1px solid #ddd;
- border-radius:9px;
- margin:7px 0;
- outline:none
-}
-.auth button{
- width:100%;
- padding:12px;
- border-radius:8px;
- font-weight:bold;
- margin-top:8px
-}
-.loginbtn{background:#1877f2;color:#fff}
-.signupbtn{background:#42b72a;color:#fff}
-.forgot{
- text-align:center;
- display:block;
- color:#1877f2;
- margin:15px 0;
- cursor:pointer
-}
-.divider{border-top:1px solid #ddd;margin:20px 0}
-
-.badge{
- background:#e41e3f;color:white;
- border-radius:20px;
- padding:2px 7px;
- font-size:11px
-}
-
-@media(max-width:1000px){
- .wrap{grid-template-columns:1fr 650px;justify-content:center}
- .right{display:none}
-}
-@media(max-width:760px){
- .wrap{display:block;padding:8px}
- .left{display:none}
- .search{display:none}
- .brand{font-size:22px}
- .visual{height:220px}
-}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f0f2f5;color:#17202a;transition:.2s}
+body.dark{background:#18191a;color:#e4e6eb}button,input,textarea{font:inherit}button{cursor:pointer;border:0}
+.hidden{display:none!important}.top{height:62px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;padding:0 18px;gap:12px;position:sticky;top:0;z-index:20}
+.dark .top,.dark .card,.dark .panel,.dark .box{background:#242526;color:#e4e6eb;border-color:#3a3b3c}
+.brand{font-size:25px;font-weight:800;color:#1877f2}.search{width:260px;background:#f0f2f5;border:0;border-radius:22px;padding:11px 15px;outline:0}
+.dark .search,.dark .fakeinput,.dark .chatrow,.dark .comments input,.dark textarea,.dark .form input{background:#3a3b3c;color:#e4e6eb}
+.topnav{margin-left:auto;display:flex;gap:7px;align-items:center}.icon{width:42px;height:42px;border-radius:50%;background:#f0f2f5;font-size:18px}.dark .icon{background:#3a3b3c}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#1877f2,#7b2ff7);color:#fff;font-weight:bold;overflow:hidden}
+.av img,.big img{width:100%;height:100%;object-fit:cover}.wrap{max-width:1280px;margin:auto;display:grid;grid-template-columns:235px minmax(0,650px) 280px;gap:18px;padding:18px}
+.left,.right{position:sticky;top:80px;height:max-content}.panel,.card{background:#fff;border-radius:12px;border:1px solid #ddd;margin-bottom:15px}.menu{padding:8px}
+.mi{padding:12px;border-radius:9px;font-weight:600;display:flex;gap:11px;align-items:center}.mi:hover{background:#f0f2f5}
+.stories{display:flex;gap:10px;padding:12px;overflow:auto}.story{min-width:112px;height:170px;border-radius:12px;color:#fff;padding:10px;display:flex;align-items:flex-end;font-weight:bold;background:linear-gradient(150deg,#1877f2,#833ab4)}
+.story:nth-child(2){background:linear-gradient(150deg,#ff512f,#dd2476)}.story:nth-child(3){background:linear-gradient(150deg,#11998e,#38ef7d)}.story:nth-child(4){background:linear-gradient(150deg,#4568dc,#b06ab3)}.story:nth-child(5){background:linear-gradient(150deg,#f7971e,#ffd200)}
+.composer{padding:14px}.row{display:flex;gap:10px;align-items:center}.fakeinput{flex:1;background:#f0f2f5;padding:12px 17px;border-radius:22px;color:#65676b;cursor:pointer}
+.quick{display:flex;border-top:1px solid #ddd;margin-top:13px;padding-top:9px}.quick button{background:#fff;flex:1;padding:10px;color:#65676b;font-weight:bold;border-radius:8px}
+.posthead{display:flex;gap:10px;padding:14px}.small{font-size:13px;color:#65676b}.body{padding:0 14px 14px;line-height:1.5;white-space:pre-wrap}
+.visual{height:260px;display:grid;place-items:center;font-size:58px;color:white;background:linear-gradient(135deg,#667eea,#764ba2)}
+.stats{display:flex;justify-content:space-between;padding:9px 14px;color:#65676b;font-size:14px}.postactions{display:flex;border-top:1px solid #ddd;border-bottom:1px solid #ddd;margin:0 14px}
+.postactions button{background:#fff;color:#65676b;font-weight:bold;flex:1;padding:10px}.dark .postactions button{background:#242526;color:#ddd}.postactions .active{color:#1877f2}
+.comments{display:none;padding:10px 14px}.comments input{width:100%;border:0;background:#f0f2f5;border-radius:20px;padding:10px 14px;outline:0}.commentlist{padding:0 14px 12px}
+.bubble{background:#f0f2f5;border-radius:12px;padding:8px 11px;margin-top:7px;font-size:14px}.side-title{font-weight:bold;padding:14px 14px 5px}
+.contact{display:flex;gap:9px;align-items:center;padding:9px 12px}.dot{width:9px;height:9px;background:#31a24c;border-radius:50%;margin-left:auto}
+.friendbtn{padding:7px 12px;border-radius:7px;background:#1877f2;color:#fff;font-weight:bold}.gray{background:#e4e6eb;color:#17202a}
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:100;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}
+.box{background:#fff;width:min(560px,100%);border-radius:14px;padding:18px;max-height:92vh;overflow:auto}.mh{display:flex;justify-content:space-between;border-bottom:1px solid #ddd;padding-bottom:12px;margin-bottom:14px}
+.close{width:34px;height:34px;border-radius:50%;background:#e4e6eb}.box textarea{width:100%;height:130px;resize:none;border:1px solid #ddd;border-radius:10px;padding:12px;outline:0}
+.primary{width:100%;margin-top:12px;background:#1877f2;color:white;padding:11px;border-radius:8px;font-weight:bold}.toast{position:fixed;right:18px;bottom:18px;background:#17202a;color:#fff;padding:12px 17px;border-radius:9px;display:none;z-index:150}.toast.show{display:block}
+.profile{text-align:center;padding:20px}.big{width:120px;height:120px;margin:auto;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#1877f2,#7b2ff7);color:#fff;font-size:38px;font-weight:bold;overflow:hidden}
+.cover{height:170px;border-radius:12px 12px 0 0;background:linear-gradient(135deg,#667eea,#764ba2);position:relative}.cover img{width:100%;height:100%;object-fit:cover}.coverBtn{position:absolute;right:12px;bottom:12px;background:#fff;padding:8px 12px;border-radius:8px;font-weight:bold}
+.tabs{display:flex;border-top:1px solid #ddd;margin-top:15px}.tabs button{flex:1;background:#fff;padding:11px;font-weight:bold}.chatrow{padding:12px;background:#f0f2f5;border-radius:9px;margin:7px 0}
+.form input{width:100%;padding:11px;margin:7px 0;border:1px solid #ddd;border-radius:8px;outline:0}.auth{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1877f2,#7b2ff7);padding:20px}
+.authbox{width:min(430px,100%);background:white;border-radius:16px;padding:30px;box-shadow:0 15px 50px #0004}.authlogo{text-align:center;font-size:34px;font-weight:900;color:#1877f2}.authsub{text-align:center;color:#65676b;margin:8px 0 22px}
+.auth input{width:100%;padding:13px;border:1px solid #ddd;border-radius:9px;margin:7px 0;outline:none}.auth button{width:100%;padding:12px;border-radius:8px;font-weight:bold;margin-top:8px}
+.loginbtn{background:#1877f2;color:#fff}.signupbtn{background:#42b72a;color:#fff}.forgot{text-align:center;display:block;color:#1877f2;margin:15px 0;cursor:pointer}.divider{border-top:1px solid #ddd;margin:20px 0}
+.profilePage{max-width:900px;margin:18px auto}.profileCard{background:#fff;border:1px solid #ddd;border-radius:12px;overflow:hidden}.dark .profileCard{background:#242526;border-color:#3a3b3c}
+.profileInfo{padding:18px 24px 12px;position:relative}.profileAvatar{width:150px;height:150px;border-radius:50%;border:5px solid #fff;position:absolute;top:-75px;left:24px;background:linear-gradient(135deg,#1877f2,#7b2ff7);overflow:hidden;display:grid;place-items:center;color:white;font-size:40px;font-weight:bold}
+.profileName{margin-left:175px}.profileNav{display:flex;border-top:1px solid #ddd;margin-top:70px}.profileNav button{padding:15px 22px;background:transparent;font-weight:bold}.profileNav button.active{color:#1877f2;border-bottom:3px solid #1877f2}
+.storyCreate{position:relative;min-width:112px;height:170px;border-radius:12px;overflow:hidden;background:#eee}.storyCreate img{width:100%;height:100%;object-fit:cover}.storyCreate button{position:absolute;bottom:8px;left:8px;right:8px;padding:7px;border-radius:8px}
+@media(max-width:1000px){.wrap{grid-template-columns:1fr 650px;justify-content:center}.right{display:none}}@media(max-width:760px){.wrap{display:block;padding:8px}.left{display:none}.search{display:none}.brand{font-size:22px}.visual{height:220px}.profilePage{margin:8px}.profileAvatar{left:50%;transform:translateX(-50%)}.profileName{margin:80px 0 0;text-align:center}.profileNav{overflow:auto}}
 </style>
 </head>
-
 <body>
 
-<!-- ================= LOGIN ================= -->
 <section id="authPage" class="auth">
-
 <div class="authbox">
-
 <div class="authlogo">Connectly</div>
 <div class="authsub">Connect with friends and the world around you.</div>
-
-<!-- LOGIN -->
 <div id="loginForm">
-
 <input id="loginEmail" type="email" placeholder="Email address">
 <input id="loginPassword" type="password" placeholder="Password">
-
 <button class="loginbtn" onclick="login()">Log In</button>
-
 <span class="forgot" onclick="forgotPassword()">Forgotten password?</span>
-
 <div class="divider"></div>
-
 <button class="signupbtn" onclick="showSignup()">Create New Account</button>
-
 </div>
-
-<!-- SIGNUP -->
 <div id="signupForm" class="hidden">
-
 <h2>Create account</h2>
-
 <input id="signupName" placeholder="Full name">
 <input id="signupEmail" type="email" placeholder="Email address">
 <input id="signupPassword" type="password" placeholder="New password">
 <input id="signupConfirm" type="password" placeholder="Confirm password">
-
 <button class="signupbtn" onclick="signup()">Sign Up</button>
-
 <button onclick="showLogin()">Already have an account? Log In</button>
-
 </div>
-
 </div>
 </section>
 
-
-<!-- ================= APP ================= -->
 <section id="appPage" class="hidden">
-
 <header class="top">
-
 <div class="brand">Connectly</div>
-
-<input class="search"
-id="search"
-placeholder="Search Connectly..."
-oninput="searchFeed()">
-
+<input class="search" id="search" placeholder="Search Connectly..." oninput="searchFeed()">
 <nav class="topnav">
-
 <button class="icon" onclick="goHome()">⌂</button>
-
 <button class="icon" onclick="notifications()">🔔</button>
-
 <button class="icon" onclick="messages()">💬</button>
-
-<button class="icon" onclick="profile()">👤</button>
-
+<button class="icon" onclick="showFullProfile()">👤</button>
 <div class="av" id="topAvatar">MR</div>
-
 </nav>
 </header>
 
-
 <div class="wrap">
+<aside class="left"><div class="panel menu">
+<div class="mi" onclick="showFullProfile()">👤 My Profile</div>
+<div class="mi" onclick="toast('Friends section opened')">👥 Friends</div>
+<div class="mi" onclick="toast('Groups section opened')">👨‍👩‍👧 Groups</div>
+<div class="mi" onclick="toast('Saved section opened')">🔖 Saved</div>
+<div class="mi" onclick="toast('Marketplace opened')">🛒 Marketplace</div>
+<div class="mi" onclick="settings()">⚙️ Settings</div>
+<div class="mi" onclick="logout()">🚪 Log out</div>
+</div></aside>
 
-<!-- LEFT -->
-<aside class="left">
-
-<div class="panel menu">
-
-<div class="mi" onclick="profile()">👤 My Profile</div>
-
-<div class="mi" onclick="toast('Friends section opened')">
-👥 Friends
-</div>
-
-<div class="mi" onclick="toast('Groups section opened')">
-👨‍👩‍👧 Groups
-</div>
-
-<div class="mi" onclick="toast('Saved section opened')">
-🔖 Saved
-</div>
-
-<div class="mi" onclick="toast('Marketplace opened')">
-🛒 Marketplace
-</div>
-
-<div class="mi" onclick="settings()">
-⚙️ Settings
-</div>
-
-<div class="mi" onclick="logout()">
-🚪 Log out
-</div>
-
-</div>
-
-</aside>
-
-
-<!-- MAIN -->
 <main id="main">
-
-<!-- STORIES -->
-<div class="card stories">
-
-<div class="story">
-<div class="av">MR</div>
-Your Story
-</div>
-
-<div class="story">
-<div class="av">SA</div>
-Sarah
-</div>
-
-<div class="story">
-<div class="av">RK</div>
-Rocky
-</div>
-
-<div class="story">
-<div class="av">JA</div>
-Jannat
-</div>
-
-<div class="story">
-<div class="av">AB</div>
-Abir
-</div>
-
-</div>
-
-
-<!-- COMPOSER -->
+<div class="card stories" id="stories"></div>
 <div class="card composer">
-
-<div class="row">
-
-<div class="av" id="composerAvatar">MR</div>
-
-<div class="fakeinput"
-onclick="createPost()">
-What's on your mind?
+<div class="row"><div class="av" id="composerAvatar">MR</div><div class="fakeinput" onclick="createPost()">What's on your mind?</div></div>
+<div class="quick"><button onclick="createPost()">📹 Live Video</button><button onclick="createPost()">🖼️ Photo/Video</button><button onclick="createPost()">😊 Feeling</button></div>
 </div>
-
-</div>
-
-<div class="quick">
-
-<button onclick="createPost()">📹 Live Video</button>
-
-<button onclick="createPost()">🖼️ Photo/Video</button>
-
-<button onclick="createPost()">😊 Feeling</button>
-
-</div>
-
-</div>
-
-
 <div id="feed"></div>
-
 </main>
 
-
-<!-- RIGHT -->
 <aside class="right">
-
 <div class="panel">
-
-<div class="side-title">
-Friend Requests
+<div class="side-title">Friend Requests</div>
+<div class="contact" id="req"><div class="av">JA</div><div><b>Jannat Akter</b><br><span class="small">5 mutual friends</span></div></div>
+<div style="padding:0 12px 12px;display:flex;gap:7px"><button class="friendbtn" onclick="confirmFriend()">Confirm</button><button class="friendbtn gray" onclick="document.getElementById('req').remove()">Delete</button></div>
 </div>
-
-<div class="contact" id="req">
-
-<div class="av">JA</div>
-
-<div>
-<b>Jannat Akter</b>
-<br>
-<span class="small">5 mutual friends</span>
+<div class="panel"><div class="side-title">Contacts</div>
+<div class="contact"><div class="av">SA</div>Sarah Ahmed <span class="dot"></span></div>
+<div class="contact"><div class="av">AB</div>Abir Hasan <span class="dot"></span></div>
+<div class="contact"><div class="av">JA</div>Jannat Akter <span class="dot"></span></div>
+<div class="contact"><div class="av">RK</div>Rocky Khan <span class="dot"></span></div>
 </div>
-
-</div>
-
-<div style="padding:0 12px 12px;display:flex;gap:7px">
-
-<button class="friendbtn"
-onclick="confirmFriend()">
-Confirm
-</button>
-
-<button class="friendbtn gray"
-onclick="document.getElementById('req').remove()">
-Delete
-</button>
-
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<div class="side-title">
-Contacts
-</div>
-
-<div class="contact">
-<div class="av">SA</div>
-Sarah Ahmed
-<span class="dot"></span>
-</div>
-
-<div class="contact">
-<div class="av">AB</div>
-Abir Hasan
-<span class="dot"></span>
-</div>
-
-<div class="contact">
-<div class="av">JA</div>
-Jannat Akter
-<span class="dot"></span>
-</div>
-
-<div class="contact">
-<div class="av">RK</div>
-Rocky Khan
-<span class="dot"></span>
-</div>
-
-</div>
-
 </aside>
-
 </div>
 </section>
 
-
-<div class="modal" id="modal">
-
-<div class="box" id="box"></div>
-
-</div>
-
+<div class="modal" id="modal"><div class="box" id="box"></div></div>
 <div class="toast" id="toast"></div>
 
-
 <script>
+const modal=document.getElementById("modal"),box=document.getElementById("box");
+const defaultStories=[["MR","Your Story"],["SA","Sarah"],["RK","Rocky"],["JA","Jannat"],["AB","Abir"]];
 
-/* ================= AUTH ================= */
-
-const authPage=document.getElementById("authPage");
-const appPage=document.getElementById("appPage");
-
-function getUsers(){
- return JSON.parse(localStorage.getItem("connectlyUsers")||"[]");
-}
-
-function saveUsers(users){
- localStorage.setItem("connectlyUsers",JSON.stringify(users));
-}
-
-function showSignup(){
- document.getElementById("loginForm").classList.add("hidden");
- document.getElementById("signupForm").classList.remove("hidden");
-}
-
-function showLogin(){
- document.getElementById("signupForm").classList.add("hidden");
- document.getElementById("loginForm").classList.remove("hidden");
-}
-
+function getUsers(){return JSON.parse(localStorage.getItem("connectlyUsers")||"[]")}
+function saveUsers(u){localStorage.setItem("connectlyUsers",JSON.stringify(u))}
+function current(){return JSON.parse(localStorage.getItem("connectlyCurrent")||"{}")}
+function initials(name){return (name||"MR").split(" ").map(x=>x[0]).join("").substring(0,2).toUpperCase()}
+function showSignup(){loginForm.classList.add("hidden");signupForm.classList.remove("hidden")}
+function showLogin(){signupForm.classList.add("hidden");loginForm.classList.remove("hidden")}
 function signup(){
-
- let name=document.getElementById("signupName").value.trim();
- let email=document.getElementById("signupEmail").value.trim().toLowerCase();
- let password=document.getElementById("signupPassword").value;
- let confirm=document.getElementById("signupConfirm").value;
-
- if(!name||!email||!password)
-   return toast("Please fill all fields");
-
- if(password.length<6)
-   return toast("Password must be at least 6 characters");
-
- if(password!==confirm)
-   return toast("Passwords do not match");
-
- let users=getUsers();
-
- if(users.some(u=>u.email===email))
-   return toast("Email already registered");
-
- users.push({
-   name:name,
-   email:email,
-   password:password,
-   bio:"Welcome to my Connectly profile",
-   location:"Bangladesh",
-   friends:0,
-   posts:0
- });
-
- saveUsers(users);
-
- toast("Account created successfully");
-
- document.getElementById("loginEmail").value=email;
-
- showLogin();
+ let name=signupName.value.trim(),email=signupEmail.value.trim().toLowerCase(),p=signupPassword.value,c=signupConfirm.value;
+ if(!name||!email||!p)return toast("Please fill all fields");
+ if(p.length<6)return toast("Password must be at least 6 characters");
+ if(p!==c)return toast("Passwords do not match");
+ let users=getUsers();if(users.some(u=>u.email===email))return toast("Email already registered");
+ let u={name,email,password:p,bio:"Welcome to my Connectly profile",location:"Bangladesh",photo:"",cover:"",friends:0};
+ users.push(u);saveUsers(users);localStorage.setItem("connectlyCurrent",JSON.stringify(u));openApp();
 }
-
 function login(){
-
- let email=document.getElementById("loginEmail").value.trim().toLowerCase();
- let password=document.getElementById("loginPassword").value;
-
- let users=getUsers();
-
- /* Demo account */
- if(email==="demo@connectly.com" && password==="123456"){
-   localStorage.setItem("connectlyCurrent",
-   JSON.stringify({
-      name:"MR Rocky",
-      email:email,
-      bio:"Welcome to my Connectly profile",
-      location:"Bangladesh"
-   }));
-
-   openApp();
-   return;
- }
-
- let user=users.find(
-   u=>u.email===email && u.password===password
- );
-
- if(!user)
-   return toast("Invalid email or password");
-
- localStorage.setItem("connectlyCurrent",JSON.stringify(user));
-
- openApp();
+ let email=loginEmail.value.trim().toLowerCase(),p=loginPassword.value;
+ if(email==="demo@connectly.com"&&p==="123456"){localStorage.setItem("connectlyCurrent",JSON.stringify({name:"MR Rocky",email,bio:"Welcome to my Connectly profile",location:"Bangladesh",photo:"",cover:""}));openApp();return}
+ let u=getUsers().find(x=>x.email===email&&x.password===p);if(!u)return toast("Invalid email or password");localStorage.setItem("connectlyCurrent",JSON.stringify(u));openApp();
 }
-
-function forgotPassword(){
-
- let email=prompt("Enter your registered email:");
-
- if(!email)return;
-
- let user=getUsers().find(
-   u=>u.email===email.toLowerCase()
- );
-
- if(!user)
-   return toast("Email not found");
-
- alert(
- "Demo password recovery.\n\n"+
- "A real system would send a reset link to:\n"+
- email
- );
+function forgotPassword(){let e=prompt("Enter your registered email:");if(e)alert("Demo recovery: a real app would send a reset link to "+e)}
+function openApp(){authPage.classList.add("hidden");appPage.classList.remove("hidden");loadUser();loadStories();loadPosts()}
+function logout(){localStorage.removeItem("connectlyCurrent");appPage.classList.add("hidden");authPage.classList.remove("hidden");toast("Logged out")}
+function loadUser(){let u=current(),i=initials(u.name);topAvatar.textContent=i;composerAvatar.textContent=i}
+function openBox(h){box.innerHTML=h;modal.classList.add("show")}
+function closeBox(){modal.classList.remove("show")}
+modal.onclick=e=>{if(e.target===modal)closeBox()}
+function loadStories(){stories.innerHTML="";let u=current();let create=document.createElement("div");create.className="storyCreate";if(u.photo)create.innerHTML=`<img src="${u.photo}"><button onclick="createStory()">➕ Add Story</button>`;else create.innerHTML=`<div style="height:100%;display:grid;place-items:center;font-size:45px">📷</div><button onclick="createStory()">➕ Add Story</button>`;stories.appendChild(create);defaultStories.slice(1).forEach(x=>{let d=document.createElement("div");d.className="story";d.innerHTML=`<div class="av">${x[0]}</div>${x[1]}`;stories.appendChild(d)})}
+function createStory(){let input=document.createElement("input");input.type="file";input.accept="image/*";input.onchange=()=>{if(input.files[0])readImage(input.files[0],src=>{let u=current();u.story=src;localStorage.setItem("connectlyCurrent",JSON.stringify(u));loadStories();toast("Story photo added")})};input.click()}
+function readImage(file,cb){let r=new FileReader();r.onload=()=>cb(r.result);r.readAsDataURL(file)}
+function changePhoto(type){let input=document.createElement("input");input.type="file";input.accept="image/*";input.onchange=()=>{if(!input.files[0])return;readImage(input.files[0],src=>{let u=current();u[type]=src;localStorage.setItem("connectlyCurrent",JSON.stringify(u));let users=getUsers();let idx=users.findIndex(x=>x.email===u.email);if(idx>=0){users[idx][type]=src;saveUsers(users)}loadUser();loadStories();showFullProfile();toast(type==="photo"?"Profile picture updated":"Cover photo updated")})};input.click()}
+function showFullProfile(){
+ let u=current(),photo=u.photo?`<img src="${u.photo}">`:initials(u.name),cover=u.cover?`<img src="${u.cover}">`:"";
+ openBox(`<div class="mh"><h2>My Profile</h2><button class="close" onclick="closeBox()">✕</button></div>
+ <div class="profileCard"><div class="cover">${cover}<button class="coverBtn" onclick="changePhoto('cover')">📷 Edit Cover</button></div>
+ <div class="profileInfo"><div class="profileAvatar">${photo}</div><div class="profileName"><h2>${esc(u.name||"MR Rocky")}</h2><p class="small">${esc(u.bio||"")} · ${esc(u.location||"Bangladesh")}</p></div>
+ <div style="display:flex;justify-content:flex-end;gap:8px"><button class="friendbtn" onclick="changePhoto('photo')">📷 Change Profile Picture</button><button class="friendbtn gray" onclick="editProfile()">✏️ Edit Profile</button></div>
+ <div class="profileNav"><button class="active">Posts</button><button>About</button><button>Friends</button><button>Photos</button></div></div></div>`)
 }
-
-function openApp(){
-
- authPage.classList.add("hidden");
- appPage.classList.remove("hidden");
-
- loadUser();
- loadPosts();
-}
-
-function logout(){
-
- localStorage.removeItem("connectlyCurrent");
-
- appPage.classList.add("hidden");
- authPage.classList.remove("hidden");
-
- toast("Logged out successfully");
-}
-
-function loadUser(){
-
- let user=JSON.parse(
-   localStorage.getItem("connectlyCurrent")||"{}"
- );
-
- let initials=(user.name||"MR")
-   .split(" ")
-   .map(x=>x[0])
-   .join("")
-   .substring(0,2)
-   .toUpperCase();
-
- document.getElementById("topAvatar").textContent=initials;
- document.getElementById("composerAvatar").textContent=initials;
-}
-
-
-/* ================= MODAL ================= */
-
-const modal=document.getElementById("modal");
-const box=document.getElementById("box");
-
-function openBox(html){
- box.innerHTML=html;
- modal.classList.add("show");
-}
-
-function closeBox(){
- modal.classList.remove("show");
-}
-
-modal.onclick=e=>{
- if(e.target===modal)closeBox();
-}
-
-
-/* ================= POSTS ================= */
-
-const defaultPosts=[
- {
-  name:"Sarah Ahmed",
-  avatar:"SA",
-  text:"Beautiful day! Hope everyone is doing great. ❤️",
-  emoji:"🌄",
-  likes:128,
-  comments:24,
-  shares:8
- },
- {
-  name:"Rocky Khan",
-  avatar:"RK",
-  text:"আজকের দিনটা অনেক সুন্দর! 😎",
-  emoji:"☀️",
-  likes:76,
-  comments:12,
-  shares:3
- }
-];
-
-function loadPosts(){
-
- let posts=JSON.parse(
-   localStorage.getItem("connectlyPosts")||"null"
- );
-
- if(!posts){
-   posts=defaultPosts;
-   localStorage.setItem(
-     "connectlyPosts",
-     JSON.stringify(posts)
-   );
- }
-
- renderPosts(posts);
-}
-
-function renderPosts(posts){
-
- const feed=document.getElementById("feed");
-
- feed.innerHTML="";
-
- posts.forEach((p,index)=>{
-
-  let article=document.createElement("article");
-
-  article.className="card post";
-
-  article.innerHTML=`
-
-  <div class="posthead">
-
-   <div class="av">${p.avatar}</div>
-
-   <div>
-    <b>${esc(p.name)}</b>
-    <br>
-    <span class="small">Just now · 🌎</span>
-   </div>
-
-  </div>
-
-  <div class="body">${esc(p.text)}</div>
-
-  <div class="visual">${p.emoji||""}</div>
-
-  <div class="stats">
-
-   <span class="likes">👍 ${p.likes||0}</span>
-
-   <span>
-    ${p.comments||0} comments ·
-    ${p.shares||0} shares
-   </span>
-
-  </div>
-
-  <div class="postactions">
-
-   <button onclick="like(this)">
-   👍 Like
-   </button>
-
-   <button onclick="commentBox(this)">
-   💬 Comment
-   </button>
-
-   <button onclick="share()">
-   ↗ Share
-   </button>
-
-  </div>
-
-  <div class="comments">
-
-   <input
-   placeholder="Write a comment..."
-   onkeydown="addComment(event,this)">
-
-  </div>
-
-  <div class="commentlist"></div>
-
-  `;
-
-  feed.appendChild(article);
-
- });
-
-}
-
-
-/* CREATE POST */
-
-function createPost(){
-
- openBox(`
-
- <div class="mh">
-
- <h2>Create Post</h2>
-
- <button
- class="close"
- onclick="closeBox()">
- ✕
- </button>
-
- </div>
-
- <div class="row">
-
- <div class="av">MR</div>
-
- <b>MR Rocky</b>
-
- </div>
-
- <textarea
- id="posttext"
- placeholder="What's on your mind?"></textarea>
-
- <div class="row" style="margin-top:8px">
-
- <button
- class="friendbtn gray"
- onclick="addPhoto()">
- 🖼️ Photo
- </button>
-
- <button
- class="friendbtn gray"
- onclick="toast('Feeling picker opened')">
- 😊 Feeling
- </button>
-
- <button
- class="friendbtn gray"
- onclick="toast('Privacy: Public')">
- 🌎 Public
- </button>
-
- </div>
-
- <button
- class="primary"
- onclick="publish()">
- Post
- </button>
-
- `);
-
-}
-
-function addPhoto(){
-
- toast("Photo upload demo — backend storage not connected");
-
-}
-
-
-/* PUBLISH */
-
-function publish(){
-
- let t=document.getElementById("posttext")
-   .value.trim();
-
- if(!t)
-   return toast("Write something first");
-
- let user=JSON.parse(
-   localStorage.getItem("connectlyCurrent")||"{}"
- );
-
- let initials=(user.name||"MR")
- .split(" ")
- .map(x=>x[0])
- .join("")
- .substring(0,2)
- .toUpperCase();
-
- let posts=JSON.parse(
-   localStorage.getItem("connectlyPosts")||"[]"
- );
-
- posts.unshift({
-   name:user.name||"MR Rocky",
-   avatar:initials,
-   text:t,
-   emoji:"💬",
-   likes:0,
-   comments:0,
-   shares:0
- });
-
- localStorage.setItem(
-   "connectlyPosts",
-   JSON.stringify(posts)
- );
-
- renderPosts(posts);
-
- closeBox();
-
- toast("Post published successfully");
-}
-
-
-/* LIKE */
-
-function like(b){
-
- b.classList.toggle("active");
-
- let s=b.closest(".post")
- .querySelector(".likes");
-
- let n=parseInt(
-   s.textContent.replace(/\D/g,"")
- )||0;
-
- s.textContent=
- "👍 "+(n+(b.classList.contains("active")?1:-1));
-
-}
-
-
-/* COMMENT */
-
-function commentBox(b){
-
- let c=b.closest(".post")
- .querySelector(".comments");
-
- c.style.display=
- c.style.display==="block"?
- "none":"block";
-
- if(c.style.display==="block")
-   c.querySelector("input").focus();
-
-}
-
-function addComment(e,i){
-
- if(e.key!=="Enter"||!i.value.trim())
-   return;
-
- let d=document.createElement("div");
-
- d.className="bubble";
-
- d.innerHTML=
- "<b>MR Rocky</b> "+
- esc(i.value.trim());
-
- i.closest(".post")
- .querySelector(".commentlist")
- .appendChild(d);
-
- i.value="";
-
- toast("Comment added");
-
-}
-
-
-/* SHARE */
-
-function share(){
-
- if(navigator.share){
-
-  navigator.share({
-    title:"Connectly",
-    text:"Check out this post on Connectly"
-  }).catch(()=>{});
-
- }else{
-
-  navigator.clipboard?.writeText(
-    location.href
-  );
-
-  toast("Post link copied");
-
- }
-
-}
-
-
-/* ================= PROFILE ================= */
-
-function profile(){
-
- let user=JSON.parse(
-   localStorage.getItem("connectlyCurrent")||"{}"
- );
-
- openBox(`
-
- <div class="mh">
-
- <h2>My Profile</h2>
-
- <button
- class="close"
- onclick="closeBox()">✕</button>
-
- </div>
-
- <div class="profile">
-
- <div class="big">MR</div>
-
- <h2>${esc(user.name||"MR Rocky")}</h2>
-
- <p class="small">
- 1.2K Friends · 48 Posts
- </p>
-
- <p>${esc(user.bio||"Welcome to Connectly")}</p>
-
- <button
- class="friendbtn"
- onclick="editProfile()">
- Edit Profile
- </button>
-
- <div class="tabs">
-
- <button>Posts</button>
- <button>Friends</button>
- <button>Photos</button>
-
- </div>
-
- </div>
-
- `);
-
-}
-
 function editProfile(){
-
- let user=JSON.parse(
-   localStorage.getItem("connectlyCurrent")||"{}"
- );
-
- openBox(`
-
- <div class="mh">
-
- <h2>Edit Profile</h2>
-
- <button
- class="close"
- onclick="closeBox()">✕</button>
-
- </div>
-
- <div class="form">
-
- <label>Name</label>
-
- <input
- id="editName"
- value="${esc(user.name||"")}">
-
- <label>Bio</label>
-
- <input
- id="editBio"
- value="${esc(user.bio||"")}">
-
- <label>Location</label>
-
- <input
- id="editLocation"
- value="${esc(user.location||"Bangladesh")}">
-
- <button
- class="primary"
- onclick="saveProfile()">
- Save Changes
- </button>
-
- </div>
-
- `);
-
+ let u=current();openBox(`<div class="mh"><h2>Edit Profile</h2><button class="close" onclick="closeBox()">✕</button></div><div class="form"><label>Name</label><input id="editName" value="${esc(u.name||"")}"><label>Bio</label><input id="editBio" value="${esc(u.bio||"")}"><label>Location</label><input id="editLocation" value="${esc(u.location||"")}"><button class="primary" onclick="saveProfile()">Save Changes</button></div>`)
 }
-
-function saveProfile(){
-
- let user=JSON.parse(
-   localStorage.getItem("connectlyCurrent")||"{}"
- );
-
- user.name=document.getElementById("editName").value;
- user.bio=document.getElementById("editBio").value;
- user.location=document.getElementById("editLocation").value;
-
- localStorage.setItem(
-   "connectlyCurrent",
-   JSON.stringify(user)
- );
-
- loadUser();
-
- closeBox();
-
- toast("Profile updated");
-
-}
-
-
-/* ================= NOTIFICATIONS ================= */
-
-function notifications(){
-
- openBox(`
-
- <div class="mh">
-
- <h2>Notifications</h2>
-
- <button class="close"
- onclick="closeBox()">✕</button>
-
- </div>
-
- <div class="chatrow">
- 👍 Sarah Ahmed liked your post.
- </div>
-
- <div class="chatrow">
- 💬 Abir commented on your post.
- </div>
-
- <div class="chatrow">
- 👥 Jannat sent you a friend request.
- </div>
-
- <div class="chatrow">
- ❤️ You have a new reaction.
- </div>
-
- `);
-
-}
-
-
-/* ================= MESSENGER ================= */
-
-function messages(){
-
- openBox(`
-
- <div class="mh">
-
- <h2>Messenger</h2>
-
- <button class="close"
- onclick="closeBox()">✕</button>
-
- </div>
-
- <div class="chatrow"
- onclick="chatDemo()">
- 🟢 Sarah Ahmed — Online
- </div>
-
- <div class="chatrow"
- onclick="chatDemo()">
- 🟢 Abir Hasan — Online
- </div>
-
- <div class="chatrow"
- onclick="chatDemo()">
- 🟢 Jannat Akter — Online
- </div>
-
- `);
-
-}
-
-function chatDemo(){
-
- openBox(`
-
- <div class="mh">
-
- <h2>Sarah Ahmed</h2>
-
- <button class="close"
- onclick="closeBox()">✕</button>
-
- </div>
-
- <div
- id="chatMessages"
- style="background:#f0f2f5;padding:15px;border-radius:10px">
-
- <div class="chatrow">
- Sarah: Hi! 👋
- </div>
-
- <div class="chatrow"
- style="text-align:right">
- You: Hello! How are you?
- </div>
-
- </div>
-
- <input
- id="msg"
- style="
- width:100%;
- padding:11px;
- border:1px solid #ddd;
- border-radius:20px;
- margin-top:10px"
- placeholder="Type a message..."
- onkeydown="sendMsg(event,this)">
-
- `);
-
-}
-
-function sendMsg(e,i){
-
- if(e.key==="Enter"&&i.value.trim()){
-
-  let d=document.createElement("div");
-
-  d.className="chatrow";
-
-  d.style.textAlign="right";
-
-  d.textContent="You: "+i.value;
-
-  document.getElementById(
-    "chatMessages"
-  ).appendChild(d);
-
-  i.value="";
-
- }
-
-}
-
-
-/* ================= SETTINGS ================= */
-
-function settings(){
-
- openBox(`
-
- <div class="mh">
-
- <h2>Settings</h2>
-
- <button
- class="close"
- onclick="closeBox()">✕</button>
-
- </div>
-
- <div class="mi"
- onclick="toast('Privacy settings opened')">
- 🔐 Privacy & Security
- </div>
-
- <div class="mi"
- onclick="notifications()">
- 🔔 Notifications
- </div>
-
- <div class="mi"
- onclick="toggleDark()">
- 🌙 Dark Mode
- </div>
-
- <div class="mi">
- 🌐 Language — English
- </div>
-
- <div class="mi"
- onclick="changePassword()">
- 🔑 Change Password
- </div>
-
- `);
-
-}
-
-function changePassword(){
-
- openBox(`
-
- <div class="mh">
-
- <h2>Change Password</h2>
-
- <button class="close"
- onclick="closeBox()">✕</button>
-
- </div>
-
- <input
- id="oldPass"
- type="password"
- placeholder="Current password"
- style="width:100%;padding:11px">
-
- <input
- id="newPass"
- type="password"
- placeholder="New password"
- style="width:100%;padding:11px;margin-top:8px">
-
- <button
- class="primary"
- onclick="savePassword()">
- Change Password
- </button>
-
- `);
-
-}
-
-function savePassword(){
-
- let current=JSON.parse(
-   localStorage.getItem("connectlyCurrent")||"{}"
- );
-
- let users=getUsers();
-
- let old=document.getElementById("oldPass").value;
- let newp=document.getElementById("newPass").value;
-
- let user=users.find(
-   u=>u.email===current.email
- );
-
- if(!user)
-   return toast("User not found");
-
- if(user.password!==old)
-   return toast("Current password is incorrect");
-
- if(newp.length<6)
-   return toast("Password must be 6+ characters");
-
- user.password=newp;
-
- saveUsers(users);
-
- closeBox();
-
- toast("Password changed");
-
-}
-
-
-/* ================= DARK MODE ================= */
-
-function toggleDark(){
-
- document.body.classList.toggle("dark");
-
- localStorage.setItem(
-   "connectlyDark",
-   document.body.classList.contains("dark")
- );
-
- toast(
-   document.body.classList.contains("dark")?
-   "Dark mode enabled":
-   "Light mode enabled"
- );
-
-}
-
-if(localStorage.getItem("connectlyDark")==="true")
- document.body.classList.add("dark");
-
-
-/* ================= FRIEND ================= */
-
-function confirmFriend(){
-
- let req=document.getElementById("req");
-
- if(req){
-
-  req.innerHTML=
-  '<div class="av">JA</div>'+
-  '<b>Jannat Akter — Friends ✓</b>';
-
- }
-
- toast("Friend request accepted");
-
-}
-
-
-/* ================= SEARCH ================= */
-
-function searchFeed(){
-
- let q=document.getElementById("search")
- .value.toLowerCase();
-
- document.querySelectorAll(".post")
- .forEach(p=>{
-
-  p.style.display=
-  p.innerText.toLowerCase()
-  .includes(q)?"block":"none";
-
- });
-
-}
-
-
-/* ================= HOME ================= */
-
-function goHome(){
-
- window.scrollTo({
-   top:0,
-   behavior:"smooth"
- });
-
- toast("Home");
-
-}
-
-
-/* ================= TOAST ================= */
-
-function toast(x){
-
- let t=document.getElementById("toast");
-
- t.textContent=x;
-
- t.classList.add("show");
-
- setTimeout(
-   ()=>t.classList.remove("show"),
-   1800
- );
-
-}
-
-
-/* ================= SECURITY ================= */
-
-function esc(s){
-
- let d=document.createElement("div");
-
- d.textContent=s;
-
- return d.innerHTML;
-
-}
-
-
-/* ================= AUTO LOGIN ================= */
-
-if(localStorage.getItem("connectlyCurrent")){
-
- openApp();
-
-}
-
+function saveProfile(){let u=current();u.name=editName.value.trim()||u.name;u.bio=editBio.value.trim();u.location=editLocation.value.trim();localStorage.setItem("connectlyCurrent",JSON.stringify(u));let users=getUsers(),i=users.findIndex(x=>x.email===u.email);if(i>=0){users[i]=u;saveUsers(users)}loadUser();closeBox();showFullProfile();toast("Profile updated")}
+function createPost(){openBox(`<div class="mh"><h2>Create Post</h2><button class="close" onclick="closeBox()">✕</button></div><div class="row"><div class="av">${initials(current().name)}</div><b>${esc(current().name||"MR Rocky")}</b></div><textarea id="posttext" placeholder="What's on your mind?"></textarea><div class="row" style="margin-top:8px"><button class="friendbtn gray" onclick="toast('Photo picker — choose a file below');addPostImage()">🖼️ Photo</button><button class="friendbtn gray" onclick="toast('Feeling picker opened')">😊 Feeling</button><button class="friendbtn gray" onclick="toast('Privacy: Public')">🌎 Public</button></div><div id="postPreview"></div><button class="primary" onclick="publish()">Post</button>`)}
+function addPostImage(){let input=document.createElement("input");input.type="file";input.accept="image/*";input.onchange=()=>{if(input.files[0])readImage(input.files[0],src=>{document.getElementById("postPreview").innerHTML=`<img src="${src}" style="width:100%;max-height:260px;object-fit:cover;border-radius:10px;margin-top:10px" id="postImg">`})};input.click()}
+function publish(){let t=posttext.value.trim();if(!t&&!document.getElementById("postImg"))return toast("Write something or add a photo");let u=current(),posts=JSON.parse(localStorage.getItem("connectlyPosts")||"[]");posts.unshift({name:u.name||"MR Rocky",avatar:initials(u.name),text:t,photo:document.getElementById("postImg")?.src||"",emoji:"",likes:0,comments:0,shares:0});localStorage.setItem("connectlyPosts",JSON.stringify(posts));renderPosts(posts);closeBox();toast("Post published")}
+function loadPosts(){let p=JSON.parse(localStorage.getItem("connectlyPosts")||"null");if(!p){p=[{name:"Sarah Ahmed",avatar:"SA",text:"Beautiful day! Hope everyone is doing great. ❤️",photo:"",emoji:"🌄",likes:128,comments:24,shares:8},{name:"Rocky Khan",avatar:"RK",text:"আজকের দিনটা অনেক সুন্দর! 😎",photo:"",emoji:"☀️",likes:76,comments:12,shares:3}];localStorage.setItem("connectlyPosts",JSON.stringify(p))}renderPosts(p)}
+function renderPosts(posts){feed.innerHTML="";posts.forEach(p=>{let a=document.createElement("article");a.className="card post";let visual=p.photo?`<img src="${p.photo}" style="width:100%;height:260px;object-fit:cover">`:`<div class="visual">${p.emoji||"💬"}</div>`;a.innerHTML=`<div class="posthead"><div class="av">${esc(p.avatar||"MR")}</div><div><b>${esc(p.name)}</b><br><span class="small">Just now · 🌎</span></div></div><div class="body">${esc(p.text||"")}</div>${visual}<div class="stats"><span class="likes">👍 ${p.likes||0}</span><span>${p.comments||0} comments · ${p.shares||0} shares</span></div><div class="postactions"><button onclick="like(this)">👍 Like</button><button onclick="commentBox(this)">💬 Comment</button><button onclick="share()">↗ Share</button></div><div class="comments"><input placeholder="Write a comment..." onkeydown="addComment(event,this)"></div><div class="commentlist"></div>`;feed.appendChild(a)})}
+function like(b){b.classList.toggle("active");let s=b.closest(".post").querySelector(".likes"),n=parseInt(s.textContent.replace(/\D/g,""))||0;s.textContent="👍 "+(n+(b.classList.contains("active")?1:-1))}
+function commentBox(b){let c=b.closest(".post").querySelector(".comments");c.style.display=c.style.display==="block"?"none":"block";if(c.style.display==="block")c.querySelector("input").focus()}
+function addComment(e,i){if(e.key!=="Enter"||!i.value.trim())return;let d=document.createElement("div");d.className="bubble";d.innerHTML="<b>"+esc(current().name||"MR Rocky")+"</b> "+esc(i.value.trim());i.closest(".post").querySelector(".commentlist").appendChild(d);i.value="";toast("Comment added")}
+function share(){if(navigator.share)navigator.share({title:"Connectly",text:"Check out this post on Connectly"}).catch(()=>{});else toast("Post link copied")}
+function notifications(){openBox(`<div class="mh"><h2>Notifications</h2><button class="close" onclick="closeBox()">✕</button></div><div class="chatrow">👍 Sarah Ahmed liked your post.</div><div class="chatrow">💬 Abir commented on your post.</div><div class="chatrow">👥 Jannat sent you a friend request.</div><div class="chatrow">❤️ You have a new reaction.</div>`)}
+function messages(){openBox(`<div class="mh"><h2>Messenger</h2><button class="close" onclick="closeBox()">✕</button></div><div class="chatrow" onclick="chatDemo()">🟢 Sarah Ahmed — Online</div><div class="chatrow" onclick="chatDemo()">🟢 Abir Hasan — Online</div><div class="chatrow" onclick="chatDemo()">🟢 Jannat Akter — Online</div>`)}
+function chatDemo(){openBox(`<div class="mh"><h2>Sarah Ahmed</h2><button class="close" onclick="closeBox()">✕</button></div><div id="chatMessages" style="background:#f0f2f5;padding:15px;border-radius:10px"><div class="chatrow">Sarah: Hi! 👋</div><div class="chatrow" style="text-align:right">You: Hello! How are you?</div></div><input id="msg" style="width:100%;padding:11px;border:1px solid #ddd;border-radius:20px;margin-top:10px" placeholder="Type a message..." onkeydown="sendMsg(event,this)">`)}
+function sendMsg(e,i){if(e.key==="Enter"&&i.value.trim()){let d=document.createElement("div");d.className="chatrow";d.style.textAlign="right";d.textContent="You: "+i.value;chatMessages.appendChild(d);i.value=""}}
+function settings(){openBox(`<div class="mh"><h2>Settings</h2><button class="close" onclick="closeBox()">✕</button></div><div class="mi" onclick="toast('Privacy settings opened')">🔐 Privacy & Security</div><div class="mi" onclick="toggleDark()">🌙 Dark Mode</div><div class="mi" onclick="changePassword()">🔑 Change Password</div><div class="mi" onclick="toast('Language settings opened')">🌐 Language</div>`)}
+function changePassword(){openBox(`<div class="mh"><h2>Change Password</h2><button class="close" onclick="closeBox()">✕</button></div><input id="oldPass" type="password" placeholder="Current password" style="width:100%;padding:11px"><input id="newPass" type="password" placeholder="New password" style="width:100%;padding:11px;margin-top:8px"><button class="primary" onclick="savePassword()">Change Password</button>`)}
+function savePassword(){let u=current(),users=getUsers(),old=oldPass.value,np=newPass.value,db=users.find(x=>x.email===u.email);if(!db)return toast("User not found");if(db.password!==old)return toast("Current password is incorrect");if(np.length<6)return toast("Password must be 6+ characters");db.password=np;saveUsers(users);closeBox();toast("Password changed")}
+function toggleDark(){document.body.classList.toggle("dark");localStorage.setItem("connectlyDark",document.body.classList.contains("dark"))}
+if(localStorage.getItem("connectlyDark")==="true")document.body.classList.add("dark")
+function confirmFriend(){let r=document.getElementById("req");if(r)r.innerHTML='<div class="av">JA</div><b>Jannat Akter — Friends ✓</b>';toast("Friend request accepted")}
+function searchFeed(){let q=search.value.toLowerCase();document.querySelectorAll(".post").forEach(p=>p.style.display=p.innerText.toLowerCase().includes(q)?"block":"none")}
+function goHome(){window.scrollTo({top:0,behavior:"smooth"});toast("Home")}
+function toast(x){let t=document.getElementById("toast");t.textContent=x;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
+function esc(s){let d=document.createElement("div");d.textContent=s;return d.innerHTML}
+function showSignup(){loginForm.classList.add("hidden");signupForm.classList.remove("hidden")}
+if(localStorage.getItem("connectlyCurrent"))openApp();
 </script>
-
 </body>
 </html>
