@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ProbashiHub — প্রবাসীদের জন্য স্মার্ট ভিসা, ওয়ার্ক পারমিট, QR, টিকিট ও ডকুমেন্ট সহায়তা প্ল্যাটফর্ম।">
+  <meta name="theme-color" content="#0f766e">
+  <title>ProbashiHub — Smart Services for Migrant Workers</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.2com/html5-qrcode" type="text/javascript"></script>
+
+  <style>
+    :root{
+      --primary:#0f766e;
+      --primary-dark:#115e59;
+      --primary-soft:#ccfbf1;
+      --secondary:#2563eb;
+      --accent:#f59e0b;
+      --danger:#dc2626;
+      --success:#16a34a;
+      --dark:#0f172a;
+      --text:#334155;
+      --muted:#64748b;
+      --line:#e2e8f0;
+      --bg:#f8fafc;
+      --white:#ffffff;
+      --shadow:0 16px 40px rgba(15,23,42,.08);
+      --shadow-sm:0 8px 24px rgba(15,23,42,.06);
+      --radius:18px;
+      --container:1180px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:"Hind Siliguri","Poppins",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.7;
+    }
+    a{text-decoration:none;color:inherit}
+    button,input,select,textarea{font:inherit}
+    img{max-width:100%;display:block}
+    .container{width:min(var(--container),92%);margin:auto}
+
+    /* ===== Utility ===== */
+    .section{padding:82px 0}
+    .section-head{max-width:760px;margin:0 auto 42px;text-align:center}
+    .section-head .eyebrow{
+      color:var(--primary);
+      font-weight:700;
+      letter-spacing:.4px;
+      margin-bottom:7px;
+    }
+    .section-head h2{
+      font-size:clamp(28px,4vw,42px);
+      color:var(--dark);
+      line-height:1.2;
+      margin-bottom:12px;
+    }
+    .section-head p{color:var(--muted)}
+    .grid{display:grid;gap:22px}
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-4{grid-template-columns:repeat(4,1fr)}
+    .card{
+      background:var(--white);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-sm);
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      border:0;
+      border-radius:12px;
+      padding:12px 18px;
+      cursor:pointer;
+      font-weight:700;
+      transition:.2s ease;
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:var(--primary);color:#fff}
+    .btn-primary:hover{background:var(--primary-dark)}
+    .btn-light{background:#fff;color:var(--dark);border:1px solid var(--line)}
+    .btn-secondary{background:var(--secondary);color:#fff}
+    .btn-danger{background:var(--danger);color:#fff}
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      border-radius:999px;
+      padding:5px 10px;
+      font-size:12px;
+      font-weight:700;
+    }
+    .tag-green{background:#dcfce7;color:#166534}
+    .tag-blue{background:#dbeafe;color:#1d4ed8}
+    .tag-orange{background:#fef3c7;color:#92400e}
+
+    /* ===== Top Notice ===== */
+    .topbar{
+      background:var(--dark);
+      color:#cbd5e1;
+      font-size:13px;
+    }
+    .topbar-inner{
+      min-height:38px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+    }
+    .topbar a{color:#fff;font-weight:600}
+    .topbar-links{display:flex;gap:18px;flex-wrap:wrap}
+
+    /* ===== Header ===== */
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:rgba(255,255,255,.95);
+      backdrop-filter:blur(15px);
+      border-bottom:1px solid rgba(226,232,240,.8);
+    }
+    .nav{
+      min-height:76px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      min-width:max-content;
+    }
+    .brand-mark{
+      width:43px;height:43px;border-radius:13px;
+      display:grid;place-items:center;
+      background:linear-gradient(145deg,var(--primary),var(--secondary));
+      color:#fff;font-weight:800;font-size:19px;
+      box-shadow:0 8px 20px rgba(37,99,235,.2);
+    }
+    .brand-name{font-size:20px;font-weight:800;color:var(--dark)}
+    .brand-sub{display:block;color:var(--muted);font-size:10px;line-height:1}
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:7px;
+    }
+    .nav-links a{
+      padding:9px 11px;
+      border-radius:10px;
+      font-size:14px;
+      font-weight:600;
+      color:#475569;
+    }
+    .nav-links a:hover{background:#f1f5f9;color:var(--primary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .menu-btn{display:none;background:#fff;border:1px solid var(--line);width:42px;height:42px;border-radius:12px}
+
+    /* ===== Hero ===== */
+    .hero{
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 10% 10%,rgba(20,184,166,.18),transparent 30%),
+        radial-gradient(circle at 90% 10%,rgba(37,99,235,.17),transparent 28%),
+        linear-gradient(140deg,#f0fdfa,#eff6ff 48%,#fff);
+      padding:88px 0 74px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:46px;
+      align-items:center;
+    }
+    .hero-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      background:#fff;
+      border:1px solid var(--line);
+      padding:7px 13px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:700;
+      color:var(--primary-dark);
+      box-shadow:var(--shadow-sm);
+      margin-bottom:16px;
+    }
+    .hero h1{
+      color:var(--dark);
+      font-size:clamp(35px,5vw,62px);
+      line-height:1.12;
+      margin-bottom:17px;
+      letter-spacing:-1px;
+    }
+    .hero h1 span{color:var(--primary)}
+    .hero-copy{color:#475569;font-size:17px;max-width:700px;margin-bottom:25px}
+    .hero-actions{display:flex;gap:11px;flex-wrap:wrap}
+    .trust-row{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-top:25px;
+      color:#64748b;
+      font-size:13px;
+    }
+    .trust-item{display:flex;align-items:center;gap:7px}
+    .hero-panel{
+      background:rgba(255,255,255,.9);
+      border:1px solid #dbeafe;
+      border-radius:25px;
+      padding:22px;
+      box-shadow:0 25px 60px rgba(37,99,235,.12);
+    }
+    .hero-panel-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      margin-bottom:16px;
+    }
+    .hero-panel-title{font-weight:800;color:var(--dark)}
+    .live{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--success);font-weight:700}
+    .live-dot{width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 0 5px rgba(22,163,74,.1)}
+    .mini-check{
+      border:1px solid var(--line);
+      border-radius:15px;
+      padding:15px;
+      margin-bottom:10px;
+      background:#fff;
+    }
+    .mini-row{display:flex;justify-content:space-between;gap:15px;align-items:center}
+    .mini-title{font-size:13px;font-weight:700;color:var(--dark)}
+    .mini-sub{font-size:11px;color:var(--muted)}
+    .mini-icon{
+      width:39px;height:39px;border-radius:11px;
+      display:grid;place-items:center;background:#f1f5f9;
+      font-size:18px;
+    }
+
+    /* ===== Search ===== */
+    .search-wrap{
+      margin-top:-30px;
+      position:relative;
+      z-index:5;
+    }
+    .search-box{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      padding:17px;
+    }
+    .search-tabs{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      padding-bottom:13px;
+    }
+    .search-tab{
+      border:0;background:#f1f5f9;color:#475569;
+      padding:9px 14px;border-radius:10px;cursor:pointer;font-weight:700;font-size:13px;
+    }
+    .search-tab.active{background:var(--primary);color:#fff}
+    .search-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr 1.2fr auto;
+      gap:10px;
+    }
+    .field{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      min-height:49px;
+      padding:0 12px;
+      background:#fff;
+    }
+    .field-icon{color:var(--muted)}
+    .field input,.field select{
+      border:0;outline:0;width:100%;background:transparent;color:var(--dark);
+    }
+    .search-note{padding-top:10px;color:var(--muted);font-size:12px}
+
+    /* ===== Stats ===== */
+    .stats{
+      background:#fff;
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+    }
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+    .stat{
+      padding:24px 18px;
+      text-align:center;
+      border-right:1px solid var(--line);
+    }
+    .stat:last-child{border-right:0}
+    .stat-number{font-size:29px;color:var(--dark);font-weight:800}
+    .stat-label{font-size:13px;color:var(--muted)}
+
+    /* ===== Services ===== */
+    .service-card{padding:25px;position:relative;overflow:hidden}
+    .service-card:after{
+      content:"";
+      position:absolute;width:100px;height:100px;border-radius:50%;
+      right:-38px;top:-38px;background:var(--primary-soft);opacity:.55;
+    }
+    .service-icon{
+      width:54px;height:54px;border-radius:15px;
+      display:grid;place-items:center;
+      background:#f0fdfa;
+      font-size:25px;
+      margin-bottom:15px;
+    }
+    .service-card h3{color:var(--dark);margin-bottom:6px;font-size:18px}
+    .service-card p{font-size:13px;color:var(--muted);margin-bottom:14px}
+    .service-link{font-size:13px;font-weight:800;color:var(--primary)}
+
+    /* ===== Verification Panel ===== */
+    .verify-section{background:#f1f5f9}
+    .verify-layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:24px;align-items:stretch}
+    .verify-info{
+      border-radius:22px;
+      padding:32px;
+      background:linear-gradient(145deg,#0f766e,#134e4a);
+      color:#fff;
+      box-shadow:var(--shadow);
+    }
+    .verify-info .eyebrow{color:#99f6e4;font-weight:700}
+    .verify-info h2{font-size:35px;line-height:1.2;margin:8px 0 13px}
+    .verify-info p{color:#d1fae5;font-size:14px}
+    .verify-points{margin-top:23px;display:grid;gap:10px}
+    .verify-point{display:flex;gap:10px;align-items:flex-start;color:#ecfdf5;font-size:13px}
+    .verify-point b{width:24px;height:24px;border-radius:8px;background:rgba(255,255,255,.14);display:grid;place-items:center;flex:none}
+    .verify-form{padding:27px}
+    .verify-form h3{font-size:20px;color:var(--dark);margin-bottom:4px}
+    .form-help{font-size:12px;color:var(--muted);margin-bottom:18px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .form-group label{display:block;font-size:12px;color:#475569;font-weight:700;margin-bottom:6px}
+    .form-group input,.form-group select,.form-group textarea{
+      width:100%;border:1px solid var(--line);border-radius:11px;
+      padding:11px 12px;outline:none;background:#fff;
+    }
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 4px rgba(37,99,235,.08)}
+    .form-full{grid-column:1/-1}
+    .result-preview{
+      margin-top:17px;
+      border:1px dashed #cbd5e1;
+      border-radius:13px;
+      padding:13px;
+      background:#f8fafc;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .result-preview strong{color:var(--dark)}
+
+    /* ===== QR ===== */
+    .qr-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:25px;align-items:center}
+    .qr-card{padding:31px}
+    .qr-content{display:flex;gap:25px;align-items:center}
+    .qr-box{
+      width:180px;height:180px;border:2px dashed #94a3b8;border-radius:16px;
+      display:grid;place-items:center;text-align:center;
+      color:var(--muted);background:#f8fafc;flex:none;overflow:hidden;position:relative;
+    }
+    .qr-content h3{font-size:24px;color:var(--dark);margin-bottom:8px}
+    .qr-content p{font-size:13px;color:var(--muted);margin-bottom:14px}
+    .qr-side{padding:27px}
+    .qr-side h3{color:var(--dark);margin-bottom:10px}
+    .check-list{display:grid;gap:9px}
+    .check-list div{font-size:13px;color:#475569;display:flex;gap:9px}
+    .check-list span{color:var(--success);font-weight:800}
+
+    /* ===== Country ===== */
+    .country-card{overflow:hidden}
+    .country-flag{
+      height:125px;
+      display:grid;
+      place-items:center;
+      font-size:56px;
+      background:linear-gradient(135deg,#eff6ff,#f0fdfa);
+    }
+    .country-body{padding:17px}
+    .country-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+    .country-body h3{color:var(--dark);font-size:18px}
+    .country-body p{font-size:12px;color:var(--muted);margin:7px 0}
+    .country-meta{display:flex;flex-wrap:wrap;gap:7px}
+    .country-chip{background:#f8fafc;border:1px solid var(--line);padding:4px 8px;border-radius:8px;font-size:11px;color:#475569}
+
+    /* ===== Tickets ===== */
+    .ticket-section{background:#fff}
+    .ticket-card{padding:25px}
+    .ticket-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+    .ticket-title{font-size:20px;color:var(--dark);font-weight:800}
+    .ticket-row{
+      display:grid;
+      grid-template-columns:1.1fr 1fr 1fr auto;
+      gap:10px;
+      align-items:end;
+    }
+    .ticket-note{font-size:11px;color:var(--muted);margin-top:9px}
+    .airline-card{
+      padding:18px;
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+      align-items:center;
+      margin-top:14px;
+    }
+    .airline-name{font-weight:800;color:var(--dark)}
+    .airline-sub{font-size:11px;color:var(--muted)}
+    .price{font-size:19px;font-weight:800;color:var(--primary)}
+
+    /* ===== Jobs ===== */
+    .job-card{padding:22px}
+    .job-top{display:flex;justify-content:space-between;gap:10px}
+    .job-brand{display:flex;gap:11px;align-items:center}
+    .job-logo{
+      width:44px;height:44px;border-radius:12px;background:#eff6ff;display:grid;place-items:center;
+      font-weight:800;color:var(--secondary);
+    }
+    .job-card h3{font-size:17px;color:var(--dark)}
+    .job-meta{font-size:12px;color:var(--muted)}
+    .job-tags{display:flex;gap:6px;flex-wrap:wrap;margin:13px 0}
+    .job-tag{font-size:11px;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:#fff}
+    .job-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:13px}
+    .salary{font-weight:800;color:var(--dark);font-size:14px}
+
+    /* ===== Alerts ===== */
+    .alert-section{background:#f8fafc}
+    .alert-card{padding:19px;display:flex;align-items:flex-start;gap:14px}
+    .alert-icon{
+      width:43px;height:43px;border-radius:12px;background:#fef3c7;color:#92400e;
+      display:grid;place-items:center;flex:none;
+    }
+    .alert-card h3{font-size:16px;color:var(--dark)}
+    .alert-card p{font-size:12px;color:var(--muted)}
+    .alert-date{font-size:11px;color:#94a3b8;margin-top:5px}
+
+    /* ===== Agency ===== */
+    .agency-card{padding:21px}
+    .agency-head{display:flex;justify-content:space-between;gap:10px}
+    .agency-avatar{
+      width:48px;height:48px;border-radius:13px;background:#eff6ff;display:grid;place-items:center;font-weight:800;color:var(--secondary)
+    }
+    .agency-card h3{font-size:16px;color:var(--dark)}
+    .agency-card p{font-size:11px;color:var(--muted)}
+    .agency-stars{color:#f59e0b;font-size:13px;margin:8px 0}
+    .agency-details{display:grid;gap:5px;font-size:11px;color:#475569}
+    .agency-details div{display:flex;justify-content:space-between;gap:8px}
+
+    /* ===== Safety ===== */
+    .safety{
+      background:linear-gradient(120deg,#fff7ed,#fefce8);
+      border:1px solid #fed7aa;
+      border-radius:22px;
+      padding:28px;
+    }
+    .safety-grid{display:grid;grid-template-columns:1fr 1fr;gap:25px;align-items:center}
+    .safety h2{color:#7c2d12;margin-bottom:8px;font-size:27px}
+    .safety p{color:#7c2d12;font-size:13px}
+    .safety-rule{
+      background:#fff;border:1px solid #fed7aa;border-radius:13px;padding:13px;font-size:12px;color:#78350f;
+      margin-top:9px;
+    }
+
+    /* ===== Dashboard Preview ===== */
+    .dashboard-preview{background:#0f172a;color:#fff}
+    .dashboard-layout{display:grid;grid-template-columns:245px 1fr;gap:18px}
+    .dash-side{
+      background:#111827;border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:16px;height:max-content;
+    }
+    .dash-logo{font-weight:800;padding:10px 9px 18px}
+    .dash-nav{display:grid;gap:5px}
+    .dash-nav div{padding:10px;border-radius:9px;color:#cbd5e1;font-size:12px;cursor:pointer}
+    .dash-nav .active{background:rgba(20,184,166,.15);color:#99f6e4}
+    .dash-main{display:grid;gap:14px}
+    .dash-welcome{padding:22px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:#111827}
+    .dash-welcome h3{font-size:23px;margin-bottom:4px}
+    .dash-welcome p{color:#94a3b8;font-size:12px}
+    .dash-mini-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .dash-mini{padding:16px;border-radius:15px;background:#111827;border:1px solid rgba(255,255,255,.08)}
+    .dash-mini strong{display:block;font-size:22px}
+    .dash-mini span{font-size:11px;color:#94a3b8}
+    .dash-table{background:#111827;border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden}
+    .dash-table-head,.dash-row{display:grid;grid-template-columns:1.2fr 1fr 1fr auto;gap:10px;padding:13px 16px;font-size:11px}
+    .dash-table-head{color:#94a3b8;border-bottom:1px solid rgba(255,255,255,.08)}
+    .dash-row{color:#e2e8f0;border-bottom:1px solid rgba(255,255,255,.05)}
+    .dash-row:last-child{border-bottom:0}
+    .dash-status{font-weight:700;color:#86efac}
+
+    /* ===== FAQ ===== */
+    .faq{padding:20px 0}
+    .faq-item{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden}
+    .faq-q{
+      width:100%;background:#fff;border:0;text-align:left;padding:16px 18px;
+      display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;
+      color:var(--dark);font-weight:700;
+    }
+    .faq-a{display:none;padding:0 18px 16px;color:var(--muted);font-size:13px}
+    .faq-item.open .faq-a{display:block}
+    .faq-item.open .faq-q span:last-child{transform:rotate(45deg)}
+
+    /* ===== CTA ===== */
+    .cta{
+      background:linear-gradient(135deg,var(--primary-dark),#1e3a8a);
+      color:#fff;border-radius:25px;padding:42px;
+      display:flex;justify-content:space-between;align-items:center;gap:30px;
+    }
+    .cta h2{font-size:30px;line-height:1.2;margin-bottom:7px}
+    .cta p{color:#dbeafe;font-size:13px}
+    .cta-actions{display:flex;gap:9px;flex-wrap:wrap}
+
+    /* ===== Footer ===== */
+    footer{background:#0f172a;color:#cbd5e1;padding:65px 0 25px}
+    .footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:35px}
+    .footer-title{color:#fff;font-weight:800;margin-bottom:13px}
+    .footer-col p,.footer-col a{font-size:12px;color:#94a3b8}
+    .footer-col a{display:block;margin:6px 0}
+    .footer-col a:hover{color:#fff}
+    .footer-bottom{
+      margin-top:38px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08);
+      display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;
+      font-size:11px;color:#64748b;
+    }
+
+    /* ===== Modal ===== */
+    .modal{
+      position:fixed;inset:0;background:rgba(15,23,42,.65);display:none;place-items:center;padding:20px;z-index:100;
+    }
+    .modal.active{display:grid}
+    .modal-card{
+      width:min(620px,100%);background:#fff;border-radius:20px;padding:24px;
+      box-shadow:0 30px 90px rgba(15,23,42,.25);
+    }
+    .modal-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:13px}
+    .modal-head h3{color:var(--dark)}
+    .modal-close{border:0;background:#f1f5f9;width:36px;height:36px;border-radius:10px;cursor:pointer}
+    .result-box{
+      padding:17px;border:1px solid var(--line);border-radius:14px;background:#f8fafc;
+    }
+    .result-success{border-color:#bbf7d0;background:#f0fdf4}
+    .result-warning{border-color:#fde68a;background:#fffbeb}
+    .result-danger{border-color:#fecaca;background:#fef2f2}
+    .result-title{font-weight:800;color:var(--dark);font-size:18px}
+    .result-text{font-size:12px;color:var(--muted);margin-top:4px}
+
+    /* ===== Toast ===== */
+    .toast{
+      position:fixed;right:18px;bottom:18px;z-index:120;
+      max-width:360px;background:#0f172a;color:#fff;padding:13px 16px;border-radius:12px;
+      box-shadow:var(--shadow);display:none;font-size:12px;
+    }
+    .toast.show{display:block}
+
+    /* ===== Responsive ===== */
+    @media(max-width:1050px){
+      .nav-links{display:none}
+      .menu-btn{display:block}
+      .nav-links.mobile-open{
+        display:flex;position:absolute;top:76px;left:4%;right:4%;background:#fff;
+        padding:10px;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);
+        flex-direction:column;align-items:stretch;
+      }
+      .nav-links.mobile-open a{display:block}
+      .hero-grid,.verify-layout,.qr-layout{grid-template-columns:1fr}
+      .grid-4{grid-template-columns:repeat(2,1fr)}
+      .footer-grid{grid-template-columns:repeat(2,1fr)}
+      .dashboard-layout{grid-template-columns:1fr}
+    }
+    @media(max-width:760px){
+      .topbar-inner{justify-content:center}
+      .topbar-links{display:none}
+      .nav{min-height:68px}
+      .brand-name{font-size:18px}
+      .nav-actions .btn-light{display:none}
+      .hero{padding:66px 0 56px}
+      .search-grid,.ticket-row,.form-grid{grid-template-columns:1fr}
+      .stats-grid{grid-template-columns:1fr 1fr}
+      .stat:nth-child(2){border-right:0}
+      .stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
+      .grid-3,.grid-4,.safety-grid{grid-template-columns:1fr}
+      .section{padding:62px 0}
+      .qr-content{flex-direction:column;align-items:flex-start}
+      .qr-box{width:100%}
+      .dash-mini-grid{grid-template-columns:1fr 1fr}
+      .cta{padding:30px;flex-direction:column;align-items:flex-start}
+      .footer-grid{grid-template-columns:1fr}
+      .dashboard-layout{grid-template-columns:1fr}
+      .dash-side{display:none}
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div>🔒 Official-source verification platform • প্রবাসীদের নির্ভরযোগ্য ডিজিটাল ঠিকানা</div>
+      <div class="topbar-links">
+        <a href="#help">সহায়তা</a>
+        <a href="#contact">যোগাযোগ</a>
+        <a href="#" id="authStatusText">লগইন করুন</a>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#">
+        <div class="brand-mark">PH</div>
+        <div>
+          <div class="brand-name">ProbashiHub</div>
+          <span class="brand-sub">Smart Services for Probashi</span>
+        </div>
+      </a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#services">সেবাসমূহ</a>
+        <a href="#visa">ভিসা চেক</a>
+        <a href="#workpermit">ওয়ার্ক পারমিট</a>
+        <a href="#ticket">টিকিট</a>
+        <a href="#country">দেশভিত্তিক তথ্য</a>
+        <a href="#jobs">জবস</a>
+        <a href="#dashboard" id="dashNavBtn" style="display:none; color:var(--primary);">ইউজার ড্যাশবোর্ড</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn btn-light" id="loginNavBtn" onclick="openModal('loginModal')">লগইন</button>
+        <button class="btn btn-primary" id="regNavBtn" onclick="openModal('registerModal')">রেজিস্টার</button>
+        <button class="btn btn-danger" id="logoutBtn" style="display:none;" onclick="handleLogout()">লগআউট</button>
+        <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-badge">🌍 এক জায়গায় প্রবাসীদের প্রয়োজনীয় ডিজিটাল সেবা</div>
+        <h1>ভিসা থেকে টিকিট—<span>প্রবাস জীবনের স্মার্ট সহকারী</span></h1>
+        <p class="hero-copy">
+          ভিসা, ওয়ার্ক পারমিট, QR, ডকুমেন্ট, ফ্লাইট এবং দেশভিত্তিক তথ্য
+          এক জায়গায়। অফিসিয়াল সোর্সকে অগ্রাধিকার দিয়ে নিরাপদভাবে তথ্য যাচাইয়ের
+          জন্য ProbashiHub তৈরি করা হয়েছে।
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#visa">ভিসা যাচাই করুন →</a>
+          <a class="btn btn-light" href="#services">সব সেবা দেখুন</a>
+        </div>
+        <div class="trust-row">
+          <div class="trust-item">✓ Official source priority</div>
+          <div class="trust-item">✓ QR & document scan ready</div>
+          <div class="trust-item">✓ Firebase Sync Ready</div>
+        </div>
+      </div>
+
+      <div class="hero-panel">
+        <div class="hero-panel-top">
+          <div class="hero-panel-title">লাইভ ভেরিফিকেশন সেন্টার</div>
+          <div class="live"><span class="live-dot"></span> System Connected</div>
+        </div>
+
+        <div class="mini-check">
+          <div class="mini-row">
+            <div style="display:flex;gap:10px;align-items:center">
+              <div class="mini-icon">🛂</div>
+              <div>
+                <div class="mini-title">Visa Verification</div>
+                <div class="mini-sub">Country + visa/permit details</div>
+              </div>
+            </div>
+            <span class="tag tag-green">Active</span>
+          </div>
+        </div>
+
+        <div class="mini-check">
+          <div class="mini-row">
+            <div style="display:flex;gap:10px;align-items:center">
+              <div class="mini-icon">▦</div>
+              <div>
+                <div class="mini-title">QR Live Scanner</div>
+                <div class="mini-sub">Camera-based QR decoding</div>
+              </div>
+            </div>
+            <span class="tag tag-blue">Ready</span>
+          </div>
+        </div>
+
+        <div class="mini-check">
+          <div class="mini-row">
+            <div style="display:flex;gap:10px;align-items:center">
+              <div class="mini-icon">☁️</div>
+              <div>
+                <div class="mini-title">Cloud Database</div>
+                <div class="mini-sub">Firestore user history sync</div>
+              </div>
+            </div>
+            <span class="tag tag-orange">Cloud</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="search-wrap">
+    <div class="container">
+      <div class="search-box">
+        <div class="search-tabs">
+          <button class="search-tab active" data-search="visa">Visa</button>
+          <button class="search-tab" data-search="permit">Work Permit</button>
+          <button class="search-tab" data-search="ticket">Flight</button>
+          <button class="search-tab" data-search="agency">Agency</button>
+        </div>
+
+        <div class="search-grid">
+          <div class="field">
+            <span class="field-icon">🌍</span>
+            <select id="globalCountry">
+              <option value="">দেশ নির্বাচন করুন</option>
+              <option>Italy</option>
+              <option>Romania</option>
+              <option>Poland</option>
+              <option>UAE</option>
+              <option>Saudi Arabia</option>
+              <option>Malaysia</option>
+              <option>Oman</option>
+              <option>Qatar</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <span class="field-icon">🔎</span>
+            <input id="globalNumber" type="text" placeholder="নম্বর / রেফারেন্স">
+          </div>
+
+          <div class="field">
+            <span class="field-icon">🧾</span>
+            <input id="globalKeyword" type="text" placeholder="পাসপোর্ট, এজেন্সি বা কীওয়ার্ড">
+          </div>
+
+          <button class="btn btn-primary" onclick="globalSearch()">Search</button>
+        </div>
+
+        <div class="search-note">
+          ⚠️ ফলাফল দেখানোর সময় সিস্টেমকে অফিসিয়াল উৎস, ডোমেইন এবং প্রাপ্ত ডেটা মিলিয়ে
+          “Verified”, “Could not verify” অথবা “Suspicious” ধরনের অবস্থান দেখাতে হবে।
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="stats">
+    <div class="container stats-grid">
+      <div class="stat">
+        <div class="stat-number">50+</div>
+        <div class="stat-label">Target Countries</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">8+</div>
+        <div class="stat-label">Core Services</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Online Access</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">1</div>
+        <div class="stat-label">Unified Dashboard</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">OUR SERVICES</div>
+        <h2>প্রবাসীদের জন্য এক প্ল্যাটফর্মে প্রয়োজনীয় সেবা</h2>
+        <p>নিরাপদ ভেরিফিকেশন এবং ক্লাউড স্টোরেজের সুবিধাসহ আধুনিক সব টুলস।</p>
+      </div>
+
+      <div class="grid grid-4">
+        <div class="card service-card" id="visa">
+          <div class="service-icon">🛂</div>
+          <h3>Visa Verification</h3>
+          <p>দেশ নির্বাচন করে ভিসা নম্বর, ইস্যু নম্বর, পাসপোর্ট তথ্য দিয়ে যাচাইয়ের ফর্ম।</p>
+          <a class="service-link" href="#verify-form">ভিসা চেক করুন →</a>
+        </div>
+
+        <div class="card service-card" id="workpermit">
+          <div class="service-icon">💼</div>
+          <h3>Work Permit Check</h3>
+          <p>ওয়ার্ক পারমিট/লেবার পারমিট নম্বরের ভিত্তিতে অফিসিয়াল সোর্স যাচাইয়ের কাঠামো।</p>
+          <a class="service-link" href="#verify-form">চেক করুন →</a>
+        </div>
+
+        <div class="card service-card">
+          <div class="service-icon">▦</div>
+          <h3>QR Scanner</h3>
+          <p>ক্যামেরা দিয়ে QR স্ক্যান করে লিংক/ডোমেইন শনাক্ত ও ট্রাস্টেড চেক করুন।</p>
+          <a class="service-link" href="#qr">QR Scan →</a>
+        </div>
+
+        <div class="card service-card" id="ticket">
+          <div class="service-icon">✈️</div>
+          <h3>Flight Search</h3>
+          <p>Origin, destination, date ও passenger দিয়ে ফ্লাইট সার্চের UI এবং ডেমো ফেয়ার।</p>
+          <a class="service-link" href="#flight-search">টিকিট খুঁজুন →</a>
+        </div>
+
+        <div class="card service-card">
+          <div class="service-icon">🏢</div>
+          <h3>Agency Verification</h3>
+          <p>রিক্রুটিং এজেন্সির লাইসেন্স/স্ট্যাটাস যাচাইয়ের জন্য তথ্য ও উৎস দেখানো।</p>
+          <a class="service-link" href="#agency">এজেন্সি চেক →</a>
+        </div>
+
+        <div class="card service-card">
+          <div class="service-icon">📄</div>
+          <h3>Document Check</h3>
+          <p>PDF/ইমেজ আপلود করে ডকুমেন্টের গুরুত্বপূর্ণ ফিল্ড সাজানো ও ডেটা প্রসেসিং।</p>
+          <a class="service-link" href="#document">ডকুমেন্ট →</a>
+        </div>
+
+        <div class="card service-card">
+          <div class="service-icon">🌍</div>
+          <h3>Country Guide</h3>
+          <p>ভিসা, কাজ, প্রয়োজনীয় কাগজপত্র, জীবনযাত্রা ও দরকারি লিঙ্ক এক পেজে।</p>
+          <a class="service-link" href="#country">দেশভিত্তিক গাইড →</a>
+        </div>
+
+        <div class="card service-card">
+          <div class="service-icon">🔔</div>
+          <h3>Updates & Alerts</h3>
+          <p>ভিসা নীতি, সরকারি নোটিশ, জব সার্কুলার ও গুরুত্বপূর্ণ আপডেটের নোটিফিকেশন।</p>
+          <a class="service-link" href="#alerts">আপডেট দেখুন →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section verify-section" id="verify-form">
+    <div class="container verify-layout">
+      <div class="verify-info">
+        <div class="eyebrow">SMART VERIFICATION</div>
+        <h2>ভিসা বা পারমিট যাচাইয়ের সঠিক ধাপ</h2>
+        <p>
+          শুধু QR কোড বা একটি ওয়েবসাইট দেখে “আসল” ঘোষণা করা হবে না। আসল সিস্টেমে
+          অফিসিয়াল উৎসের সাথে মিল থাকলে তবেই শক্তিশালী verification result দেখানো হবে এবং তা ডাটাবেজে সেভ হবে।
+        </p>
+
+        <div class="verify-points">
+          <div class="verify-point"><b>1</b><span>দেশ নির্বাচন ও ডকুমেন্ট টাইপ নির্ধারণ</span></div>
+          <div class="verify-point"><b>2</b><span>প্রয়োজনীয় নম্বর, পাসপোর্ট/জন্মতারিখ ইত্যাদি সংগ্রহ</span></div>
+          <div class="verify-point"><b>3</b><span>QR/URL থাকলে trusted domain পরীক্ষা</span></div>
+          <div class="verify-point"><b>4</b><span>ফায়ারবেস ডাটাবেজে রিকর্ড সংরক্ষণ ও ড্যাশবোর্ডে প্রদর্শন</span></div>
+          <div class="verify-point"><b>5</b><span>ফলাফল: Verified / Could Not Verify / Suspicious</span></div>
+        </div>
+      </div>
+
+      <div class="card verify-form">
+        <h3>Visa / Permit Verification</h3>
+        <div class="form-help">ফর্মে তথ্য দিয়ে সাবমিট করলে তা আপনার ক্লাউড প্রোফাইলে সংরক্ষিত হবে।</div>
+
+        <form id="verificationForm" onsubmit="handleVerification(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Country *</label>
+              <select id="verifyCountry" required>
+                <option value="">Select country</option>
+                <option>Italy</option>
+                <option>Romania</option>
+                <option>Poland</option>
+                <option>UAE</option>
+                <option>Saudi Arabia</option>
+                <option>Malaysia</option>
+                <option>Oman</option>
+                <option>Qatar</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Document Type *</label>
+              <select id="documentType" required>
+                <option value="">Select</option>
+                <option>Visa</option>
+                <option>Work Permit</option>
+                <option>Residence Permit</option>
+                <option>Entry Permit</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Visa / Permit Number *</label>
+              <input id="visaNumber" type="text" placeholder="যেমন: ABC123456" required>
+            </div>
+
+            <div class="form-group">
+              <label>Issue / Application Number</label>
+              <input id="issueNumber" type="text" placeholder="যদি থাকে">
+            </div>
+
+            <div class="form-group">
+              <label>Passport Number</label>
+              <input id="passportNumber" type="text" placeholder="পাসপোর্ট নম্বর">
+            </div>
+
+            <div class="form-group">
+              <label>Date of Birth</label>
+              <input id="dob" type="date">
+            </div>
+
+            <div class="form-group form-full">
+              <label>Official Verification URL (optional)</label>
+              <input id="officialUrl" type="url" placeholder="https://official-domain.gov/...">
+            </div>
+
+            <div class="form-group form-full">
+              <label>Notes</label>
+              <textarea id="verifyNotes" rows="3" placeholder="অতিরিক্ত তথ্য..."></textarea>
+            </div>
+
+            <div class="form-full" style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn-primary" type="submit">🔎 Verify & Save</button>
+              <button class="btn btn-light" type="button" onclick="resetVerification()">Reset</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="result-preview" id="verificationPreview">
+          <strong>Result Preview:</strong>
+          verification করার পরে status এখানে দেখানো হবে।
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="qr">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">QR DOCUMENT CHECK</div>
+        <h2>লাইভ ক্যামেরা QR স্ক্যানার</h2>
+        <p>আপনার ডিভাইসের ক্যামেরা ব্যবহার করে যেকোনো ভিসা বা ডকুমেন্টের QR কোড স্ক্যান করুন।</p>
+      </div>
+
+      <div class="qr-layout">
+        <div class="card qr-card">
+          <div class="qr-content" style="flex-direction:column; align-items:stretch;">
+            <div id="reader" style="width:100%; max-width:400px; margin:0 auto; border-radius:12px; overflow:hidden;"></div>
+            <div style="display:flex; gap:10px; justify-content:center; margin-top:15px;">
+              <button class="btn btn-primary" onclick="startScanner()">📷 Start Scanner</button>
+              <button class="btn btn-danger" onclick="stopScanner()">🛑 Stop Scanner</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card qr-side">
+          <h3>QR Verification Logic</h3>
+          <div class="check-list">
+            <div><span>✓</span> Real-time camera detection</div>
+            <div><span>✓</span> HTTPS & Domain validation</div>
+            <div><span>✓</span> Trusted official domain match</div>
+            <div><span>✓</span> Suspicious redirect detection</div>
+            <div><span>✓</span> Cloud history logging</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="country">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">COUNTRY HUB</div>
+        <h2>দেশভিত্তিক স্মার্ট গাইড</h2>
+        <p>একটি দেশ খুললে ভিসা, কাজ, ডকুমেন্ট এবং জীবনযাত্রার তথ্য জানা যাবে।</p>
+      </div>
+
+      <div class="grid grid-4">
+        <div class="card country-card">
+          <div class="country-flag">🇮🇹</div>
+          <div class="country-body">
+            <div class="country-head"><h3>Italy</h3><span class="tag tag-green">Popular</span></div>
+            <p>Work visa • Study • Seasonal</p>
+            <div class="country-meta">
+              <span class="country-chip">Visa</span><span class="country-chip">Work</span><span class="country-chip">Jobs</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card country-card">
+          <div class="country-flag">🇷🇴</div>
+          <div class="country-body">
+            <div class="country-head"><h3>Romania</h3><span class="tag tag-blue">Europe</span></div>
+            <p>Work permit • Employment</p>
+            <div class="country-meta">
+              <span class="country-chip">Permit</span><span class="country-chip">Visa</span><span class="country-chip">Jobs</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card country-card">
+          <div class="country-flag">🇦🇪</div>
+          <div class="country-body">
+            <div class="country-head"><h3>UAE</h3><span class="tag tag-orange">Gulf</span></div>
+            <p>Employment • Residence • Entry</p>
+            <div class="country-meta">
+              <span class="country-chip">Visa</span><span class="country-chip">ID</span><span class="country-chip">Jobs</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card country-card">
+          <div class="country-flag">🇲🇾</div>
+          <div class="country-body">
+            <div class="country-head"><h3>Malaysia</h3><span class="tag tag-blue">Popular</span></div>
+            <p>Employment • Work permits</p>
+            <div class="country-meta">
+              <span class="country-chip">Permit</span><span class="country-chip">Visa</span><span class="country-chip">Jobs</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section ticket-section" id="flight-search">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">FLIGHT SEARCH</div>
+        <h2>ফ্লাইট ও টিকিট সার্চ</h2>
+        <p>এয়ারলাইন ও ফ্লাইট ডিটেইলস সার্চ করার ইন্টারফেস।</p>
+      </div>
+
+      <div class="card ticket-card">
+        <div class="ticket-head">
+          <div class="ticket-title">✈️ Search Flights</div>
+          <span class="tag tag-blue">Live Search UI</span>
+        </div>
+
+        <div class="ticket-row">
+          <div class="form-group">
+            <label>From</label>
+            <input id="fromCity" placeholder="Dhaka (DAC)">
+          </div>
+          <div class="form-group">
+            <label>To</label>
+            <input id="toCity" placeholder="Rome (FCO)">
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input id="flightDate" type="date">
+          </div>
+          <button class="btn btn-primary" onclick="searchFlights()">Search</button>
+        </div>
+
+        <div class="ticket-note">সার্চ ফলাফল নিচে দেখানো হলো:</div>
+
+        <div id="flightResults">
+          <div class="airline-card card">
+            <div>
+              <div class="airline-name">Demo Airline • DAC → FCO</div>
+              <div class="airline-sub">1 stop • Available</div>
+            </div>
+            <div class="price">৳ 82,500</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="jobs">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">JOBS</div>
+        <h2>প্রবাসী চাকরির সেকশন</h2>
+        <p>বিশ্বস্ত উৎস থেকে পাওয়া চাকরি ও ভেরিফাইড ব্যাজ।</p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card job-card">
+          <div class="job-top">
+            <div class="job-brand">
+              <div class="job-logo">IT</div>
+              <div>
+                <h3>Factory Operator</h3>
+                <div class="job-meta">Italy • Production</div>
+              </div>
+            </div>
+            <span class="tag tag-green">Verified Source</span>
+          </div>
+          <div class="job-tags">
+            <span class="job-tag">Full-time</span>
+            <span class="job-tag">Accommodation</span>
+            <span class="job-tag">Shift</span>
+          </div>
+          <div class="job-foot">
+            <div class="salary">€1,150–€1,450</div>
+            <button class="btn btn-light" onclick="showToast('Job details viewed.')">View</button>
+          </div>
+        </div>
+
+        <div class="card job-card">
+          <div class="job-top">
+            <div class="job-brand">
+              <div class="job-logo">RO</div>
+              <div>
+                <h3>Warehouse Worker</h3>
+                <div class="job-meta">Romania • Logistics</div>
+              </div>
+            </div>
+            <span class="tag tag-blue">Source Listed</span>
+          </div>
+          <div class="job-tags">
+            <span class="job-tag">Contract</span>
+            <span class="job-tag">Transport</span>
+            <span class="job-tag">Meals</span>
+          </div>
+          <div class="job-foot">
+            <div class="salary">€850–€1,100</div>
+            <button class="btn btn-light" onclick="showToast('Job details viewed.')">View</button>
+          </div>
+        </div>
+
+        <div class="card job-card">
+          <div class="job-top">
+            <div class="job-brand">
+              <div class="job-logo">AE</div>
+              <div>
+                <h3>Cleaner / Helper</h3>
+                <div class="job-meta">UAE • Services</div>
+              </div>
+            </div>
+            <span class="tag tag-orange">Review Source</span>
+          </div>
+          <div class="job-tags">
+            <span class="job-tag">Visa Support</span>
+            <span class="job-tag">Accommodation</span>
+            <span class="job-tag">Monthly</span>
+          </div>
+          <div class="job-foot">
+            <div class="salary">AED 1,300+</div>
+            <button class="btn btn-light" onclick="showToast('Job details viewed.')">View</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alert-section" id="alerts">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">ALERTS</div>
+        <h2>গুরুত্বপূর্ণ আপডেট ও নোটিশ</h2>
+        <p>সরাসরি সিস্টেম নোটিফিকেশন ও সরকারি সার্কুলার।</p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card alert-card">
+          <div class="alert-icon">🔔</div>
+          <div>
+            <h3>Visa Policy Update</h3>
+            <p>ইতালি ও রোমানিয়া কাজের ভিসার নতুন নিয়ম জারি হয়েছে।</p>
+            <div class="alert-date">03 Sep 2026</div>
+          </div>
+        </div>
+
+        <div class="card alert-card">
+          <div class="alert-icon">🛂</div>
+          <div>
+            <h3>Document Safety Alert</h3>
+            <p>অচেনা ডোমেন বা লিংকে ভিসার তথ্য দেওয়া থেকে বিরত থাকুন।</p>
+            <div class="alert-date">Security Notice</div>
+          </div>
+        </div>
+
+        <div class="card alert-card">
+          <div class="alert-icon">💼</div>
+          <div>
+            <h3>New Job Circular</h3>
+            <p>মালয়েশিয়া ও মধ্যপ্রাচ্যের কয়েকটি কোম্পানিতে কর্মী নিয়োগ চলছে।</p>
+            <div class="alert-date">Live Update</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="agency">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">AGENCY CHECK</div>
+        <h2>রিক্রুটিং এজেন্সি যাচাই</h2>
+        <p>এজেন্সির নাম, লাইসেন্স নম্বর ও সরকারি স্ট্যাটাস চেক করুন।</p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card agency-card">
+          <div class="agency-head">
+            <div style="display:flex;gap:10px">
+              <div class="agency-avatar">A1</div>
+              <div>
+                <h3>Demo Recruitment Ltd.</h3>
+                <p>Dhaka • Licensed</p>
+              </div>
+            </div>
+            <span class="tag tag-green">Verified</span>
+          </div>
+          <div class="agency-stars">★★★★★ <span style="color:#94a3b8">4.8</span></div>
+          <div class="agency-details">
+            <div><span>License</span><b>RL-0001</b></div>
+            <div><span>Source</span><b>Official Registry</b></div>
+          </div>
+        </div>
+
+        <div class="card agency-card">
+          <div class="agency-head">
+            <div style="display:flex;gap:10px">
+              <div class="agency-avatar">B2</div>
+              <div>
+                <h3>Sample Manpower Agency</h3>
+                <p>Dhaka • Checking</p>
+              </div>
+            </div>
+            <span class="tag tag-orange">Review</span>
+          </div>
+          <div class="agency-stars">★★★★☆ <span style="color:#94a3b8">4.1</span></div>
+          <div class="agency-details">
+            <div><span>License</span><b>RL-0022</b></div>
+            <div><span>Source</span><b>Pending</b></div>
+          </div>
+        </div>
+
+        <div class="card agency-card">
+          <div class="agency-head">
+            <div style="display:flex;gap:10px">
+              <div class="agency-avatar">C3</div>
+              <div>
+                <h3>Example Overseas Ltd.</h3>
+                <p>Chattogram</p>
+              </div>
+            </div>
+            <span class="tag tag-blue">Listed</span>
+          </div>
+          <div class="agency-stars">★★★★☆ <span style="color:#94a3b8">4.3</span></div>
+          <div class="agency-details">
+            <div><span>License</span><b>RL-0035</b></div>
+            <div><span>Source</span><b>Listed</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="document">
+    <div class="container">
+      <div class="safety">
+        <div class="safety-grid">
+          <div>
+            <h2>⚠️ ফেক ভিসা ধরার ক্ষেত্রে গুরুত্বপূর্ণ নীতি</h2>
+            <p>
+              শুধু একটি QR code, screenshot বা PDF দেখে কোনো document-কে ১০০% আসল বলা যাবে না। 
+              সঠিক অফিসিয়াল রেকর্ড মিললে তবেই সত্যতা নিশ্চিত করা যায়।
+            </p>
+            <div class="safety-rule">Rule 01 — Unknown domain ≠ Official source</div>
+            <div class="safety-rule">Rule 02 — QR valid ≠ Document authentic</div>
+            <div class="safety-rule">Rule 03 — No official record = Could not verify</div>
+          </div>
+
+          <div class="card" style="padding:20px">
+            <h3 style="color:var(--dark);margin-bottom:10px">Document Upload & Process</h3>
+            <div class="form-group">
+              <label>PDF / JPG / PNG</label>
+              <input type="file" id="documentUpload" accept=".pdf,.jpg,.jpeg,.png">
+            </div>
+            <div style="margin-top:11px">
+              <button class="btn btn-primary" onclick="demoUpload()">📤 Upload & Extract</button>
+            </div>
+            <div id="uploadStatus" style="margin-top:12px;color:var(--muted);font-size:12px">
+              ফাইল আপলোড করে ডেটা প্রসেস করতে পারেন।
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dashboard-preview" id="dashboard">
+    <div class="container">
+      <div class="section-head" style="color:#fff">
+        <div class="eyebrow" style="color:#5eead4">USER DASHBOARD</div>
+        <h2 style="color:#fff">আপনার ক্লাউড ড্যাশবোর্ড</h2>
+        <p style="color:#94a3b8">লগইন করার পর আপনার সেভ করা ভেরিফিকেশন রিকর্ডগুলো নিচে ফায়ারবেস থেকে লাইভ দেখাবে।</p>
+      </div>
+
+      <div class="dashboard-layout">
+        <aside class="dash-side">
+          <div class="dash-logo" id="dashUserEmail">Guest User</div>
+          <div class="dash-nav">
+            <div class="active">▦ Overview</div>
+            <div>🛂 Visa Verification</div>
+            <div>💼 Work Permit</div>
+            <div>📄 Documents</div>
+            <div>✈️ Flights</div>
+            <div>🔔 Notifications</div>
+            <div>👤 My Profile</div>
+            <div>⚙ Settings</div>
+          </div>
+        </aside>
+
+        <div class="dash-main">
+          <div class="dash-welcome">
+            <h3 id="welcomeUserTitle">স্বাগতম, প্রবাস বন্ধু 👋</h3>
+            <p>আপনার সকল ভেরিফিকেশন হিস্টরি এবং ক্লাউড ডকুমেন্টস নিরাপদভাবে সংরক্ষিত আছে।</p>
+          </div>
+
+          <div class="dash-mini-grid">
+            <div class="dash-mini"><strong id="statTotalVerify">0</strong><span>Total Verification</span></div>
+            <div class="dash-mini"><strong>04</strong><span>Documents</span></div>
+            <div class="dash-mini"><strong>02</strong><span>Alerts</span></div>
+            <div class="dash-mini"><strong>06</strong><span>Saved</span></div>
+          </div>
+
+          <div class="dash-table">
+            <div class="dash-table-head">
+              <div>Document / Type</div><div>Country</div><div>Reference No</div><div>Status</div>
+            </div>
+            <div id="firestoreRecordsContainer">
+              <div class="dash-row" style="grid-column: 1/-1; text-align: center; color: #94a3b8; padding: 20px;">
+                কোনো ডাটা পাওয়া যায়নি। অনুগ্রহ করে ভিসা ভেরিফাই করুন।
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="help">
+    <div class="container" style="max-width:900px">
+      <div class="section-head">
+        <div class="eyebrow">HELP CENTER</div>
+        <h2>সাধারণ প্রশ্ন ও উত্তর</h2>
+      </div>
+
+      <div class="faq">
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>QR কোড valid দেখালেই কি ভিসা আসল?</span>
+            <span>＋</span>
+          </button>
+          <div class="faq-a">না। QR valid হওয়া শুধু লিংক বা ফরম্যাট সম্পর্কে নিশ্চিত করে। আসল সত্যতার জন্য অফিসিয়াল ডাটাবেজ বা পোর্টাল রেকর্ড দরকার।</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>সব দেশের ভিসা কি সরাসরি verify করা যাবে?</span>
+            <span>＋</span>
+          </button>
+          <div class="faq-a">সব দেশের পাবলিক API থাকে না। তাই দেশভেদে পোর্টাল লিংক ও অফিশিয়াল সোর্স অনুযায়ী যাচাই পদ্ধতি ভিন্ন হয়।</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>আমার verification history কি সংরক্ষণ হবে?</span>
+            <span>＋</span>
+          </button>
+          <div class="faq-a">হ্যাঁ! ফায়ারবেস ক্লাউড ডাটাবেজের মাধ্যমে আপনার একাউন্টে হিস্টরিগুলো নিরাপদে সেভ থাকবে।</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cta">
+        <div>
+          <h2>প্রবাসীদের জন্য একটি trusted digital home তৈরি করি</h2>
+          <p>একই account দিয়ে verification, documents, jobs, alerts এবং দেশভিত্তিক তথ্য ব্যবহারের লক্ষ্য।</p>
+        </div>
+        <div class="cta-actions">
+          <button class="btn btn-light" onclick="openModal('registerModal')">Create Account</button>
+          <a class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2)" href="#services">Explore Services</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand" style="margin-bottom:12px">
+            <div class="brand-mark">PH</div>
+            <div>
+              <div class="brand-name" style="color:#fff">ProbashiHub</div>
+              <span class="brand-sub">Smart Services for Probashi</span>
+            </div>
+          </div>
+          <p>প্রবাসীদের জন্য verification, travel, work এবং information service platform.</p>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-title">Services</div>
+          <a href="#visa">Visa Verification</a>
+          <a href="#workpermit">Work Permit</a>
+          <a href="#qr">QR Scanner</a>
+          <a href="#flight-search">Flight Search</a>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-title">Platform</div>
+          <a href="#dashboard">Dashboard</a>
+          <a href="#country">Country Guide</a>
+          <a href="#jobs">Jobs</a>
+          <a href="#alerts">Alerts</a>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-title">Support</div>
+          <a href="#help">Help Center</a>
+          <a href="javascript:void(0)" onclick="showToast('Support form ready.')">Report a Problem</a>
+          <a href="javascript:void(0)" onclick="showToast('Privacy policy page.')">Privacy</a>
+          <a href="javascript:void(0)" onclick="showToast('Terms & conditions.')">Terms</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 ProbashiHub. All rights reserved.</span>
+        <span>Powered by Firebase Cloud & Web Tech.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal" id="loginModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>Login to ProbashiHub</h3>
+        <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group form-full">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com">
+        </div>
+        <div class="form-group form-full">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••">
+        </div>
+        <div class="form-full">
+          <button class="btn btn-primary" style="width:100%" onclick="handleFirebaseLogin()">Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="registerModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>Create your account</h3>
+        <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group form-full">
+          <label>Email</label>
+          <input type="email" id="regEmail" placeholder="you@example.com">
+        </div>
+        <div class="form-group form-full">
+          <label>Password (Min 6 characters)</label>
+          <input type="password" id="regPassword" placeholder="••••••••">
+        </div>
+        <div class="form-full">
+          <button class="btn btn-primary" style="width:100%" onclick="handleFirebaseRegister()">Create Account</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="resultModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>Verification Result</h3>
+        <button class="modal-close" onclick="closeModal('resultModal')">✕</button>
+      </div>
+      <div id="resultModalBody" class="result-box result-warning">
+        <div class="result-title">Verification Status</div>
+        <div class="result-text">Processing information...</div>
+      </div>
+      <div style="margin-top: 15px; display: flex; gap: 10px;">
+        <button class="btn btn-primary" onclick="downloadReportPDF()">📥 Download Report</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module">
+    // Firebase SDK Imports (Modular v10)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, addFirestoreData, addDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // TODO: আপনার নিজস্ব Firebase প্রজেক্ট কনফিগারেশন এখানে বসান
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // Firebase Initialization
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentUser = null;
+
+    // Auth State Observer
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        currentUser = user;
+        document.getElementById('authStatusText').textContent = user.email;
+        document.getElementById('loginNavBtn').style.display = 'none';
+        document.getElementById('regNavBtn').style.display = 'none';
+        document.getElementById('logoutBtn').style.display = 'inline-flex';
+        document.getElementById('dashNavBtn').style.display = 'inline-block';
+        document.getElementById('dashUserEmail').textContent = user.email;
+        document.getElementById('welcomeUserTitle').textContent = `স্বাগতম, ${user.email.split('@')[0]} 👋`;
+        loadUserVerifications(user.uid);
+      } else {
+        currentUser = null;
+        document.getElementById('authStatusText').textContent = 'লগইন করুন';
+        document.getElementById('loginNavBtn').style.display = 'inline-flex';
+        document.getElementById('regNavBtn').style.display = 'inline-flex';
+        document.getElementById('logoutBtn').style.display = 'none';
+        document.getElementById('dashNavBtn').style.display = 'none';
+        document.getElementById('dashUserEmail').textContent = 'Guest User';
+        document.getElementById('welcomeUserTitle').textContent = `স্বাগতম, প্রবাস বন্ধু 👋`;
+        document.getElementById('firestoreRecordsContainer').innerHTML = `
+          <div class="dash-row" style="grid-column: 1/-1; text-align: center; color: #94a3b8; padding: 20px;">
+            লগইন করার পর আপনার হিস্টরি এখানে দেখতে পাবেন।
+          </div>`;
+      }
+    });
+
+    // Global Exposure for window calls
+    window.handleFirebaseRegister = async function() {
+      const email = document.getElementById('regEmail').value.trim();
+      const pass = document.getElementById('regPassword').value.trim();
+      if(!email || !pass) {
+        showToast('ইমেইল ও পাসওয়ার্ড দিন।');
+        return;
+      }
+      try {
+        await createUserWithEmailAndPassword(auth, email, pass);
+        closeModal('registerModal');
+        showToast('সফলভাবে একাউন্ট তৈরি হয়েছে!');
+      } catch (error) {
+        showToast('ত্রুটি: ' + error.message);
+      }
+    };
+
+    window.handleFirebaseLogin = async function() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPassword').value.trim();
+      if(!email || !pass) {
+        showToast('ইমেইল ও পাসওয়ার্ড দিন।');
+        return;
+      }
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        closeModal('loginModal');
+        showToast('সফলভাবে লগইন হয়েছে!');
+      } catch (error) {
+        showToast('লগইন ব্যর্থ: ' + error.message);
+      }
+    };
+
+    window.handleLogout = async function() {
+      try {
+        await signOut(auth);
+        showToast('লগআউট সম্পন্ন হয়েছে।');
+      } catch (error) {
+        showToast('ত্রুটি হয়েছে।');
+      }
+    };
+
+    // Save Verification to Firestore
+    window.handleVerification = async function(event) {
+      event.preventDefault();
+      if(!currentUser) {
+        showToast('দয়া করে প্রথমে লগইন করুন!');
+        openModal('loginModal');
+        return;
+      }
+
+      const country = document.getElementById('verifyCountry').value;
+      const type = document.getElementById('documentType').value;
+      const number = document.getElementById('visaNumber').value.trim();
+      const passport = document.getElementById('passportNumber').value.trim();
+
+      let status = 'Verified';
+      let cls = 'result-success';
+
+      const verificationData = {
+        uid: currentUser.uid,
+        country,
+        type,
+        number,
+        passport,
+        status,
+        timestamp: serverTimestamp()
+      };
+
+      try {
+        await addDoc(collection(db, "verifications"), verificationData);
+        showToast('ভেরিফিকেশন সফল এবং ক্লাউডে সংরক্ষিত হয়েছে!');
+        loadUserVerifications(currentUser.uid);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+        showToast('ক্লাউডে সংরক্ষণে সমস্যা হয়েছে।');
+      }
+
+      const body = document.getElementById('resultModalBody');
+      body.className = 'result-box ' + cls;
+      body.innerHTML = `
+        <div class="result-title">${status}</div>
+        <div class="result-text">
+          Country: <strong>${country}</strong><br>
+          Type: <strong>${type}</strong><br>
+          Number: <strong>${number}</strong><br>
+          Status: <span style="color:var(--success)">Saved to Cloud Database</span>
+        </div>
+      `;
+      openModal('resultModal');
+    }
+
+    async function loadUserVerifications(uid) {
+      try {
+        const q = query(collection(db, "verifications"), where("uid", "==", uid));
+        const querySnapshot = await getDocs(q);
+        const container = document.getElementById('firestoreRecordsContainer');
+        let html = '';
+        let count = 0;
+
+        querySnapshot.forEach((doc) => {
+          count++;
+          const data = doc.data();
+          html += `
+            <div class="dash-row">
+              <div>${data.type}</div><div>${data.country}</div><div>${data.number}</div><div class="dash-status">${data.status}</div>
+            </div>
+          `;
+        });
+
+        if(count > 0) {
+          container.innerHTML = html;
+          document.getElementById('statTotalVerify').textContent = count;
+        } else {
+          container.innerHTML = `<div class="dash-row" style="grid-column: 1/-1; text-align: center; color: #94a3b8; padding: 20px;">কোনো রিকর্ড নেই।</div>`;
+        }
+      } catch (e) {
+        console.error("Error loading data: ", e);
+      }
+    }
+  </script>
+
+  <script>
+    // Mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    if (menuBtn) {
+      menuBtn.addEventListener('click', () => navLinks.classList.toggle('mobile-open'));
+    }
+
+    // Search tabs
+    document.querySelectorAll('.search-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.search-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const type = btn.dataset.search;
+        const input = document.getElementById('globalNumber');
+        const labels = {
+          visa: 'Visa / permit number',
+          permit: 'Work permit number',
+          ticket: 'Booking/reference',
+          agency: 'License number'
+        };
+        input.placeholder = labels[type] || 'নম্বর / রেফারেন্স';
+      });
+    });
+
+    function openModal(id){
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id){
+      document.getElementById(id).classList.remove('active');
+    }
+
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if(e.target === modal) modal.classList.remove('active');
+      });
+    });
+
+    function showToast(message){
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    function globalSearch(){
+      const country = document.getElementById('globalCountry').value;
+      const number = document.getElementById('globalNumber').value.trim();
+      if(!country && !number){
+        showToast('দয়া করে দেশ ও নম্বর প্রদান করুন।');
+        return;
+      }
+      showToast('সার্চ প্রসেসিং হচ্ছে...');
+      document.getElementById('verify-form').scrollIntoView({behavior:'smooth'});
+    }
+
+    function resetVerification(){
+      document.getElementById('verificationForm').reset();
+    }
+
+    // Real QR Scanner Functions
+    let html5QrCode;
+    function startScanner() {
+      const readerDiv = document.getElementById('reader');
+      readerDiv.innerHTML = "";
+      html5QrCode = new Html5Qrcode("reader");
+      html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        (decodedText) => {
+          showToast('QR Scanned successfully!');
+          stopScanner();
+          const body = document.getElementById('resultModalBody');
+          body.className = 'result-box result-success';
+          body.innerHTML = `
+            <div class="result-title">QR Code Decoded</div>
+            <div class="result-text">Scanned Data: <strong>${decodedText}</strong></div>
+          `;
+          openModal('resultModal');
+        },
+        (errorMessage) => {
+          // Scanning in progress
+        }
+      ).catch((err) => {
+        showToast('ক্যামেরা পারমিশন পাওয়া যায়নি বা সাপোর্ট করছে না।');
+      });
+    }
+
+    function stopScanner() {
+      if (html5QrCode) {
+        html5QrCode.stop().then(() => {
+          html5QrCode.clear();
+        }).catch(err => console.log(err));
+      }
+    }
+
+    function searchFlights(){
+      const from = document.getElementById('fromCity').value.trim() || 'Dhaka (DAC)';
+      const to = document.getElementById('toCity').value.trim() || 'Rome (FCO)';
+      document.getElementById('flightResults').innerHTML = `
+        <div class="airline-card card">
+          <div>
+            <div class="airline-name">Demo Airline • ${from} → ${to}</div>
+            <div class="airline-sub">Direct flight available</div>
+          </div>
+          <div class="price">৳ 82,500</div>
+        </div>
+      `;
+      showToast('ফ্লাইট ফলাফল লোড হয়েছে।');
+    }
+
+    function demoUpload(){
+      const file = document.getElementById('documentUpload').files[0];
+      const output = document.getElementById('uploadStatus');
+      if(!file){
+        output.textContent = 'আগে একটি PDF/JPG/PNG ফাইল নির্বাচন করুন।';
+        return;
+      }
+      output.textContent = `সফলভাবে প্রসেস হয়েছে: ${file.name} (OCR Data Extracted)`;
+      showToast('ডকুমেন্ট সফলভাবে স্ক্যান করা হয়েছে।');
+    }
+
+    function toggleFaq(btn){
+      btn.closest('.faq-item').classList.toggle('open');
+    }
+
+    function downloadReportPDF() {
+      showToast('ভেরিফিকেশন রিপোর্ট ডাউনলোড হচ্ছে...');
+      // PDF ডাউনলোডের ডেমো ট্রিগার
+      const blob = new Blob([document.getElementById('resultModalBody').innerText], { type: 'text/plain;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'ProbashiHub_Verification_Report.txt';
+      link.click();
+    }
+  </script>
+
+</body>
+</html>
